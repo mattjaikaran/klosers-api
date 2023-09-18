@@ -1,7 +1,8 @@
-# Klosers Front End
+# Klosers App
 
-API MVP application for Klosers
+MVP application for Klosers
 
+## Back End
 - Python 3.11.2
 - Django 4.2
 - Django Rest Framework 3.14
