@@ -1,4 +1,6 @@
-# Django Boilerplate
+# Klosers Front End
+
+API MVP application for Klosers
 
 - Python 3.11.2
 - Django 4.2
@@ -8,7 +10,6 @@
 
 TODO:
 - Passwordless auth
-
 
 # Get started
 
