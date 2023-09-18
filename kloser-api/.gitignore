@@ -1,0 +1,6 @@
+.env*.local
+.env
+/env
+*/__pycache__
+notes.md
+static

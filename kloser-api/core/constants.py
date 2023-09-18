@@ -1,0 +1,7 @@
+PUBLIC = 'PUBLIC'
+PRIVATE = 'PRIVATE'
+
+VISIBILITY_CHOICES = (
+    (PUBLIC, 'Public'),
+    (PRIVATE, 'Private')
+)

@@ -1,0 +1,9 @@
+{
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.wordBasedSuggestions": false,
+    "editor.defaultFormatter": "ms-python.black-formatter"
+    }
+}
