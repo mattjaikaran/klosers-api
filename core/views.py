@@ -89,9 +89,7 @@ class UserViewSet(
 
 
 class GoogleLoginView(SocialLoginView):
-    # disable auth,
     # make sure to override allowed origins in settings.py for prod
-    authentication_classes = []
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "http://localhost:8000/auth/google/callback/"  # front end
+    callback_url = "http://localhost:3000/"  # front end
     client_class = OAuth2Client

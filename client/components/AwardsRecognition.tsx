@@ -64,7 +64,11 @@ const AwardsRecognition = () => {
       <h5>Awards &amp; Recognition</h5>
       {renderAwards()}
 
-      <Button className="mt-3" variant="outline-primary" onClick={handleShow}>
+      <Button
+        className="mt-3 pill-btn"
+        variant="outline-primary"
+        onClick={handleShow}
+      >
         Add Award
       </Button>
 

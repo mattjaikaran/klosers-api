@@ -1,5 +1,8 @@
-import { useLogin, useLogout } from '@/lib/auth';
+import { useLogout } from '@/lib/auth';
+import { userLogout } from '@/lib/store/authSlice';
+import { useAppDispatch } from '@/lib/store/redux';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -11,7 +14,26 @@ const AuthHeader = ({
   user: any;
   isLoggedIn: boolean;
 }) => {
-  console.log('user', user);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    try {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const response = await useLogout(user);
+      console.log('response', response);
+
+      if (response.status === 200) {
+        router.push('/');
+        dispatch(userLogout(user));
+      }
+      return response;
+    } catch (error: any) {
+      console.log('error in handleLogout', error);
+      console.log('error.message', error.message);
+    }
+  };
+
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
@@ -21,14 +43,14 @@ const AuthHeader = ({
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} href="/">
+            <Nav.Link as={Link} href="/dashboard">
               Dashboard
             </Nav.Link>
             <Nav.Link as={Link} href="/profile">
               Profile
             </Nav.Link>
             {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
-            <Nav.Link onClick={() => useLogout(user)}>Logout</Nav.Link>
+            <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link as={Link} href="/">

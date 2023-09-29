@@ -14,7 +14,7 @@ export default function Signup() {
       </Head>
       <MainLayout>
         <Container>
-          <h1>Sign Up</h1>
+          <h3>Sign Up</h3>
           <RegisterForm />
         </Container>
       </MainLayout>

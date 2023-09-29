@@ -16,7 +16,7 @@ export default function Dashboard() {
       </Head>
       <AuthLayout>
         <Container>
-          <h1>Dashboard</h1>
+          <h2>Dashboard</h2>
           {/* <p>signed in as {session?.user?.email}</p>
           <Button onClick={() => signOut()}>Sign out</Button>
           {session?.accessToken && <p>User has access token</p>} */}

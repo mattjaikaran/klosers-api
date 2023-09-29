@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -6,6 +7,7 @@ import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import NewCareerStatForm from '../forms/stats/NewCareerStatForm';
 import EditCareerStatForm from '../forms/stats/EditCareerStatForm';
+import checkmark from '@/assets/icons/checkmark.svg';
 
 interface CareerStatsInputs {
   year: string;
@@ -68,7 +70,13 @@ const CareerStatsTable = ({ data }: { data: any }) => {
         <tbody>
           {data.map((item: any) => (
             <tr key={item.id}>
-              <td>{item.quota_verified ? 'Verified' : '-'}</td>
+              <td>
+                {item.quota_verified ? (
+                  <img src={checkmark.src} alt="checkmark" />
+                ) : (
+                  '-'
+                )}
+              </td>
               <td>{item.year}</td>
               <td>{item.company}</td>
               <td>{item.title}</td>
@@ -79,7 +87,11 @@ const CareerStatsTable = ({ data }: { data: any }) => {
               <td>{item.industry}</td>
               <td>{item.leaderboard_rank}</td>
               <td>
-                <Button variant="outline-success" onClick={handleShowEditModal}>
+                <Button
+                  variant="link"
+                  className="text-muted"
+                  onClick={handleShowEditModal}
+                >
                   Edit
                 </Button>
               </td>
@@ -87,7 +99,11 @@ const CareerStatsTable = ({ data }: { data: any }) => {
           ))}
         </tbody>
       </Table>
-      <Button className="my-3" variant="outline-primary" onClick={handleShow}>
+      <Button
+        className="my-3 pill-btn"
+        variant="outline-primary"
+        onClick={handleShow}
+      >
         Add Year
       </Button>
       <Modal show={show} onHide={handleClose}>

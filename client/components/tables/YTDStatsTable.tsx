@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Alert from 'react-bootstrap/Alert';
@@ -5,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import NewYTDStatForm from '../forms/stats/NewYTDStatForm';
 import EditYTDStatForm from '../forms/stats/EditYTDStatForm';
+import checkmark from '@/assets/icons/checkmark.svg';
 
 export interface YTDStatsInputs {
   quarter: string;
@@ -32,7 +34,7 @@ const YTDStatsTable = ({ data }: { data: any }) => {
 
   return (
     <>
-      <Table responsive>
+      <Table responsive striped>
         <thead>
           <tr>
             <th>Quota Verified</th>
@@ -51,7 +53,13 @@ const YTDStatsTable = ({ data }: { data: any }) => {
         <tbody>
           {data.map((item: any) => (
             <tr key={item.id}>
-              <td>{item.quota_verified ? 'Verified' : '-'}</td>
+              <td>
+                {item.quota_verified ? (
+                  <img src={checkmark.src} alt="checkmark" />
+                ) : (
+                  '-'
+                )}
+              </td>
               <td>{item.quarter}</td>
               <td>{item.company}</td>
               <td>{item.title}</td>
@@ -62,7 +70,11 @@ const YTDStatsTable = ({ data }: { data: any }) => {
               <td>{item.industry}</td>
               <td>{item.leaderboard_rank}</td>
               <td>
-                <Button variant="outline-success" onClick={handleShowEditModal}>
+                <Button
+                  variant="link"
+                  className="text-muted"
+                  onClick={handleShowEditModal}
+                >
                   Edit
                 </Button>
               </td>
@@ -70,7 +82,11 @@ const YTDStatsTable = ({ data }: { data: any }) => {
           ))}
         </tbody>
       </Table>
-      <Button className="my-3" variant="outline-primary" onClick={handleShow}>
+      <Button
+        className="my-3 pill-btn"
+        variant="outline-primary"
+        onClick={handleShow}
+      >
         Add YTD Stat
       </Button>
       <Modal show={show} onHide={handleClose}>

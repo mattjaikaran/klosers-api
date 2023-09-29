@@ -18,6 +18,7 @@ interface RegisterFormInputs {
   email: string;
   password1: string;
   password2: string;
+  password?: string;
 }
 
 const schema = yup
@@ -32,7 +33,7 @@ const schema = yup
       .required('Password is required'),
     password2: yup
       .string()
-      .oneOf([yup.ref('password')], 'Passwords must match')
+      .oneOf([yup.ref('password1')], 'Passwords must match')
       .required('Confirm Password is required'),
   })
   .required();
@@ -59,14 +60,21 @@ const RegisterForm = () => {
         password1: data.password1,
         password2: data.password2,
       };
+
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const registerResponse = await useSignup(userInfo);
       console.log('registerResponse', registerResponse);
-      if (registerResponse.status === 201)
+      if (registerResponse.status === 400) {
+        if (registerResponse.data?.email) {
+          setErrorMessage(registerResponse.data?.email);
+        }
+      }
+      if (registerResponse.status === 201) {
         return router.push({
           pathname: '/signin',
           query: { email: data.email },
         });
+      }
       return registerResponse;
     } catch (error: any) {
       console.error('error', error);

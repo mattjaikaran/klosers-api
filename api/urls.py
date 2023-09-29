@@ -43,8 +43,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html")),
     path("api/accounts/", include("allauth.urls")),  # For allauth URLs
     path("api/auth/", include("dj_rest_auth.urls")),
-    # path("api/login/", UserLoginView.as_view()),
-    path("api/auth/google/", GoogleLoginView.as_view(), name="google"),
+    path("api/auth/google/", GoogleLoginView.as_view(), name="google_login"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
     path("api/auth/register/", RegisterView.as_view(), name="rest_register"),

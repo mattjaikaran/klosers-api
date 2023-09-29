@@ -7,12 +7,19 @@ export interface UserProps {
   last_name: string;
   username: string;
   email: string;
+  title?: string;
+  company?: string;
+  profile_visibility?: string;
+  market_type?: string;
+  all_time_revenue?: string;
+  linkedin_profile?: string;
   role?: string;
+  access?: string;
   token?: string;
 }
 
 export interface LoginFormInputs {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -21,8 +28,8 @@ export interface SignupFormInputs {
   last_name: string;
   email: string;
   username: string;
-  password: string;
-  password_confirmation?: string;
+  password1: string;
+  password2: string;
 }
 export interface PasswordResetInputs {
   newPassword: string;
@@ -44,8 +51,7 @@ export const tokenHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
     'X-CSRFToken': Cookies.get('csrftoken'),
-    sessionid: Cookies.get('sessionid'),
-    Authorization: `Bearer ${user?.data?.token}`,
+    Authorization: `Bearer ${user.data.token}`,
   };
   return headers;
 };
@@ -54,7 +60,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function useSignup(data: SignupFormInputs) {
   try {
-    const response = await axios.post(`${API_URL}/users/`, data);
+    const response = await axios.post(`${API_URL}/auth/register/`, data);
     console.log('response', response);
     return response;
   } catch (error: any) {
@@ -64,7 +70,7 @@ export async function useSignup(data: SignupFormInputs) {
 }
 export async function useLogin(data: LoginFormInputs): Promise<any> {
   try {
-    const response = await axios.post(`${API_URL}/login/`, data);
+    const response = await axios.post(`${API_URL}/auth/login/`, data);
     return response;
   } catch (error: any) {
     console.log('error in useLogin', error);
@@ -74,9 +80,9 @@ export async function useLogin(data: LoginFormInputs): Promise<any> {
 
 export async function useLogout(user: UserProps): Promise<any> {
   try {
-    const response = await axios.post(`${API_URL}/logout/`, user.email);
+    const response = await axios.post(`${API_URL}/auth/logout/`, user.token);
     console.log('response', response);
-    if (response) {
+    if (response.status === 200) {
       localStorage.clear();
       return response;
     }

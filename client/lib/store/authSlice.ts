@@ -19,9 +19,10 @@ export const authSlice = createSlice({
       state.isLoggedIn = true;
     },
     userLogout: (state, action) => {
+      console.log('action in userLogout', action)
+      console.log('action.payload in userLogout', action.payload)
       state.user = {
-        ...state.user,
-        data: action.payload,
+        data: {},
       };
       state.isLoggedIn = false;
     },
@@ -30,6 +31,6 @@ export const authSlice = createSlice({
 
 export const { userLogin, userLogout } = authSlice.actions;
 
-// //Selectors - this is how we pull information from the global store slice
+//Selectors - this is how we pull information from the global store slice
 export const getUser = (state: typeof initialState) => state.user;
 export default authSlice.reducer;

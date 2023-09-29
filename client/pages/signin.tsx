@@ -6,7 +6,7 @@ import MainLayout from '@/layouts/MainLayout';
 import { signIn, signOut, useSession } from 'next-auth/react';
 export default function Signin() {
   const { data: session } = useSession();
-  console.log('session', session);
+  // console.log('session', session);
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ export default function Signin() {
       </Head>
       <MainLayout>
         <Container>
-          <h1>Sign In</h1>
+          <h3>Sign In</h3>
           <LoginForm />
           {session ? (
             <>
@@ -28,7 +28,9 @@ export default function Signin() {
           ) : (
             <>
               <p>not signed in</p>
-              <Button onClick={() => signIn('google').catch()}>
+              <Button
+                onClick={() => signIn('google', { callbackUrl: '/profile' })}
+              >
                 Sign In via Google{' '}
               </Button>
               <p>{!session && 'User is not logged in'}</p>

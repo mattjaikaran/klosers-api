@@ -2,7 +2,7 @@ import AuthHeader from '@/components/nav/AuthHeader';
 import { userLogout } from '@/lib/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store/redux';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 
 // @ts-ignore
 const AuthLayout = ({ children }) => {
@@ -12,12 +12,12 @@ const AuthLayout = ({ children }) => {
   const data: any = useAppSelector((state) => state.auth);
   const user: any = data.user.data;
 
-  useMemo(() => {
+  useEffect(() => {
     if (!user || !isLoggedIn) {
-      dispatch(userLogout(user));
       router.push('/');
+      // dispatch(userLogout(user));
     }
-  }, [user, isLoggedIn, router, dispatch]);
+  }, [user, isLoggedIn]);
 
   return (
     <div>

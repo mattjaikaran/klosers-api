@@ -9,9 +9,6 @@ import styles from '@/styles/Home.module.css';
 export default function Home() {
   const router = useRouter();
 
-  const { data: session } = useSession();
-  console.log('session', session);
-
   return (
     <>
       <Head>
@@ -21,24 +18,31 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        <Container>
-          <h1 className="mt-5">Klosers</h1>
+        <Container className="text-center">
+          <h1 className="mt-5 with-marker">Klosers</h1>
+          <h2>welcome.</h2>
           <h3 className="mt-5">Sign-up for FREE</h3>
-          <p>
+          <p className="px-5 text-muted">
             An exclusive network where top sale talent share stats, and leverage
             past performance to match with future job prospects.
           </p>
-          <p>Be on Every CEO & VPs 🔥 list.</p>
-          <div className="d-grid d-md-inline gap-2">
-            <Button
-              variant="outline-primary"
-              onClick={() => router.push('/signup')}
-            >
-              Create an Account
-            </Button>
-            <Button onClick={() => router.push('/signin')}>
-              Already have an Account?
-            </Button>
+          <p className="text-muted">Be on Every CEO & VPs 🔥 list.</p>
+          <div className="mx-5">
+            <div className="d-grid d-md-inline gap-2">
+              <Button
+                className="pill-btn"
+                onClick={() => router.push('/signup')}
+              >
+                Create an Account
+              </Button>
+              <Button
+                variant="outline-primary"
+                className="mx-md-3 pill-btn"
+                onClick={() => router.push('/signin')}
+              >
+                Already have an Account?
+              </Button>
+            </div>
           </div>
         </Container>
       </MainLayout>

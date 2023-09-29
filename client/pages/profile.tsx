@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import MainLayout from '@/layouts/MainLayout';
+import AuthLayout from '@/layouts/AuthLayout';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -12,6 +12,7 @@ import ytdStats from '@/data/ytd-stats.json';
 import AwardsRecognition from '@/components/AwardsRecognition';
 import useAxios from '@/lib/utils/axios';
 import { useRouter } from 'next/router';
+import { useAppSelector } from '@/lib/store/redux';
 
 const sampleUserDetails = {
   id: 1,
@@ -29,21 +30,26 @@ const sampleUserDetails = {
 export default function Profile() {
   const api = useAxios();
   const router = useRouter();
-  const [userDetails, setUserDetails] = useState<any>(sampleUserDetails);
-  // useEffect(() => {
-  //   const renderUserData = async () => {
-  //     try {
-  //       const response = await api.get('/user');
-  //       console.log('response', response);
-  //       console.log('response.data', response.data);
-  //       setUserDetails(response.data.details)
-  //       return response;
-  //     } catch (error) {
-  //       console.error('error', error);
-  //     }
-  //   };
-  //   renderUserData();
-  // }, []);
+  const { user }: any = useAppSelector((state) => state.auth);
+  const [userDetails, setUserDetails] = useState<any>(user.data);
+  const [userYtdStats, setUserYtdStats] = useState<any>([]);
+  const [userCareerStats, setUserCareerStats] = useState<any>([]);
+  const [userAwards, setUserAwards] = useState<any>([]);
+  useEffect(() => {
+    const renderUserData = async () => {
+      try {
+        const ytdResponse = await api.get('/ytd-stats/');
+        const careerResponse = await api.get('/career-stats/');
+        // const awardResponse = await api.get('/awards-recognition-stats/');
+        setUserYtdStats(ytdResponse.data);
+        setUserCareerStats(careerResponse.data);
+        // setUserAwards(awardResponse.data);
+      } catch (error) {
+        console.error('error', error);
+      }
+    };
+    renderUserData();
+  }, []);
   return (
     <>
       <Head>
@@ -52,57 +58,84 @@ export default function Profile() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainLayout>
+      <AuthLayout>
         <Container>
-          <h1>Profile</h1>
-          <Row>
-            <Col>
-              <p>
-                <strong>User: </strong>
-                <span>{userDetails.full_name}</span>
-              </p>
-              <p>
-                <strong>Title: </strong>
-                <span>{userDetails.title}</span>
-              </p>
-              <p>
-                <strong>Company: </strong>
-                <span>{userDetails.company}</span>
-              </p>
-              <p>
-                <strong>Market: </strong>
-                <span>{userDetails.market}</span>
-              </p>
-              <p>
-                <strong>All Time Revenue: </strong>
-                <span>{userDetails.all_time_revenue}</span>
-              </p>
-              <p>
-                <a href={userDetails.linkedin_profile} target="_blank">
-                  LinkedIn
-                </a>
-              </p>
+          <h2>Profile</h2>
+          <Row className="mt-3">
+            <Col md={6}>
+              <Row>
+                <Col>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="img-fluid"
+                    src="https://dummyimage.com/500x400/000/fff"
+                    alt=""
+                  />
+                </Col>
+                <Col>
+                  <p>
+                    <strong>Name: </strong>
+                    <span>
+                      {userDetails.first_name} {userDetails.last_name}
+                    </span>
+                  </p>
+                  <p>
+                    <strong>Title: </strong>
+                    <span>{userDetails.title}</span>
+                  </p>
+                  <p>
+                    <strong>Company: </strong>
+                    <span>{userDetails.company}</span>
+                  </p>
+                  <p>
+                    <strong>Market: </strong>
+                    <span>{userDetails.market_type}</span>
+                  </p>
+                  <p>
+                    <strong>All Time Revenue: </strong>
+                    <span>
+                      $
+                      {parseInt(userDetails.all_time_revenue).toLocaleString(
+                        'en-US'
+                      )}
+                    </span>
+                  </p>
+                  <p>
+                    <a href={userDetails.linkedin_profile} target="_blank">
+                      LinkedIn
+                    </a>
+                  </p>
+                </Col>
+              </Row>
             </Col>
-            <Col>
-              <h4>Klosers fit score.</h4>
-              <h2>{userDetails.fit_score}%</h2>
-              <p>
+            <Col md={6} className="text-center">
+              <h1 className="d-inline">
+                <span className="with-marker">Klosers</span>{' '}
+              </h1>
+              <h2 className="d-inline">
+                <span>fit score.</span>
+              </h2>
+              <h2 className="text-primary">{userDetails.user_fit_score}%</h2>
+              <p className="px-md-5">
                 Weighted score based on high value categories to fit your
                 company profile and parameters.
               </p>
-              <Button onClick={() => router.push('/leaderboard')}>
-                Kloser Leaderboard
+              <Button
+                className="pill-btn"
+                onClick={() => router.push('/leaderboard')}
+              >
+                Kloser Leaderboard {'>'}
               </Button>
             </Col>
           </Row>
           <h5>YTD Stats</h5>
-          <YTDStatsTable data={ytdStats} />
+          <YTDStatsTable data={userYtdStats} />
           <h5>Career Stats</h5>
-          <CareerStatsTable data={careerStats} />
+          <CareerStatsTable data={userCareerStats} />
 
           <AwardsRecognition />
         </Container>
-      </MainLayout>
+      </AuthLayout>
     </>
   );
 }
