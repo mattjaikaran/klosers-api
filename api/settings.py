@@ -266,5 +266,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # STATIC
 
 ADMIN_URL = "admin/"
-ADMINS = [("mattjaikaran@gmail.com")]
+ADMINS = [("""Klosers""", "mattjaikaran@gmail.com")]
 MANAGERS = ADMINS
