@@ -1,0 +1,24 @@
+{
+  "name": "Klosers App",
+  "description": "A Sales Platform",
+  "image": "heroku/python",
+  "repository": "https://github.com/mattjaikaran/klosers",
+  "keywords": ["python", "django"],
+  "env": {
+    "DJANGO_SECRET_KEY": {
+      "description": "The secret key for the Django application.",
+      "generator": "secret"
+    }
+  },
+  "addons": ["heroku-postgresql:mini"],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "./manage.py test --debug-mode"
+      }
+    }
+  },
+  "scripts": {
+    "postdeploy": "./heroku_setup.sh"
+  }
+}

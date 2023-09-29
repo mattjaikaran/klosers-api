@@ -6,8 +6,15 @@ import sys
 import dotenv
 
 
+ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
+IN_DEV = ENVIRONMENT == "development"
+IN_STAGING = ENVIRONMENT == "staging"
+IN_PROD = ENVIRONMENT == "production"
+
+
 def main():
-    dotenv.read_dotenv()
+    if IN_DEV:
+        dotenv.read_dotenv()
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.settings")
     try:

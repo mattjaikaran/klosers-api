@@ -15,6 +15,13 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 
+
+ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
+print(f">>> #ENVIRONMENT: {ENVIRONMENT} <<<")
+IN_DEV = ENVIRONMENT == "development"
+IN_STAGING = ENVIRONMENT == "staging"
+IN_PROD = ENVIRONMENT == "production"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
