@@ -22,6 +22,18 @@ IN_DEV = ENVIRONMENT == "development"
 IN_STAGING = ENVIRONMENT == "staging"
 IN_PROD = ENVIRONMENT == "production"
 
+
+def _env_get_required(setting_name):
+    """Get the value of an environment and assert that it is set"""
+    setting = os.environ.get(setting_name, "")
+    if IN_STAGING or IN_PROD:
+        assert setting not in {
+            None,
+            "",
+        }, "{0} must be defined as an environment variable.".format(setting_name)
+    return setting
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,10 +42,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = _env_get_required("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
+DEBUG = _env_get_required("DEBUG")
 
 ALLOWED_HOSTS = ["localhost", "http://127.0.0.1:3000", "http://localhost:3000"]
 CORS_ORIGIN_ALLOW_ALL = True
@@ -141,11 +153,11 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql_psycopg2",
-            "NAME": os.environ.get("DATABASE_NAME"),
-            "USER": os.environ.get("DATABASE_USER"),
-            "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-            "HOST": os.environ.get("DATABASE_HOST"),
-            "PORT": os.environ.get("DATABASE_PORT"),
+            "NAME": _env_get_required("DATABASE_NAME"),
+            "USER": _env_get_required("DATABASE_USER"),
+            "PASSWORD": os.environ.get("DATABASE_PASSWORD", ""),
+            "HOST": _env_get_required("DATABASE_HOST"),
+            "PORT": _env_get_required("DATABASE_PORT"),
         }
     }
 
