@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import AuthLayout from '@/layouts/AuthLayout';
