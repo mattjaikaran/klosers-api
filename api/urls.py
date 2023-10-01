@@ -40,7 +40,7 @@ router.register(r"awards-recognition-stats", AwardRecognitionViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", TemplateView.as_view(template_name="index.html")),
+    # path("", TemplateView.as_view(template_name="index.html")),
     path("api/accounts/", include("allauth.urls")),  # For allauth URLs
     path("api/auth/", include("dj_rest_auth.urls")),
     path("api/auth/google/", GoogleLoginView.as_view(), name="google_login"),

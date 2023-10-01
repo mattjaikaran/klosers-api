@@ -36,8 +36,8 @@ class GenericViewSetNoDestroy(
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def index(request):
-    return render(request, "index.html")
+# def index(request):
+#     return render(request, "index.html")
 
 
 class UserLoginView(generics.CreateAPIView):
