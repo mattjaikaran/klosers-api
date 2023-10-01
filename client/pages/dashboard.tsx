@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import AuthLayout from '@/layouts/AuthLayout';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import { signIn, signOut, useSession, getServerSession } from 'next-auth/react';
+// import Button from 'react-bootstrap/Button';
+// import { signIn, signOut, useSession } from 'next-auth/react';
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   return (
     <div>
       <Head>
