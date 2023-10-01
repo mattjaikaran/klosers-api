@@ -1,9 +1,7 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-// wip
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export interface AwardRecognitionInputs {
   quarter: string;
@@ -22,9 +20,12 @@ const NewAwardRecognitionForm = ({ closeModal }: { closeModal: any }) => {
   const onSubmit: SubmitHandler<AwardRecognitionInputs> = async (data) => {
     try {
       console.log(data);
-      // const response = await api.post('/award-recognition', data);
-      // console.log('response', response);
-      // return response;
+      const response = await api.post('/awards-recognition-stats/', data);
+      console.log('response', response);
+      if (response.status === 201) {
+        closeModal();
+      }
+      return response;
     } catch (error) {
       console.error('error', error);
     }

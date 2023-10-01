@@ -1,7 +1,7 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export interface YTDStatInputs {
   quarter: string;
@@ -38,8 +38,11 @@ const NewYTDStatForm = ({ closeModal }: { closeModal: any }) => {
         leaderboard_rank: data.leaderboard_rank,
       };
       console.log('ytdStat', ytdStat);
-      const response = await api.post('/ytd-stats', ytdStat);
+      const response = await api.post('/ytd-stats/', ytdStat);
       console.log('response', response);
+      if (response.status === 201) {
+        closeModal();
+      }
       return response;
     } catch (error) {
       console.error('error', error);

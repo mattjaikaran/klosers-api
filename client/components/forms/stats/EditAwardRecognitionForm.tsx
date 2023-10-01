@@ -1,7 +1,7 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { AwardRecognitionInputs } from './NewAwardRecognitionForm';
 
 // wip
@@ -22,8 +22,14 @@ const EditAwardRecognitionForm = ({
   const onSubmit: SubmitHandler<AwardRecognitionInputs> = async (data) => {
     try {
       console.log(data);
-      const response = await api.patch(`/awards-recognition-stats/${id}`, data);
+      const response = await api.patch(
+        `/awards-recognition-stats/${id}/`,
+        data
+      );
       console.log('response', response);
+      if (response.status === 200) {
+        closeModal();
+      }
       return response;
     } catch (error) {
       console.error('error', error);

@@ -3,8 +3,6 @@ import { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import useAxios from '@/lib/utils/axios';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import NewCareerStatForm from '../forms/stats/NewCareerStatForm';
 import EditCareerStatForm from '../forms/stats/EditCareerStatForm';
 import checkmark from '@/assets/icons/checkmark.svg';
@@ -32,23 +30,6 @@ const CareerStatsTable = ({ data }: { data: any }) => {
   const handleCloseEditModal = () => setShowEditModal(false);
   const handleShowEditModal = () => setShowEditModal(true);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CareerStatsInputs>();
-  const api = useAxios();
-
-  const onSubmit: SubmitHandler<CareerStatsInputs> = async (data) => {
-    try {
-      console.log(data);
-      // const response = await api.post('/login', data);
-      // console.log('response', response);
-      // return response;
-    } catch (error) {
-      console.error('error', error);
-    }
-  };
   return (
     <>
       <Table responsive striped>

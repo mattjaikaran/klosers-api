@@ -1,7 +1,7 @@
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { YTDStatInputs } from './NewYTDStatForm';
 
 const EditYTDStatForm = ({
@@ -21,9 +21,12 @@ const EditYTDStatForm = ({
   const onSubmit: SubmitHandler<YTDStatInputs> = async (data) => {
     try {
       console.log(data);
-      // const response = await api.patch(`/ytd-stats/${id}`, data);
-      // console.log('response', response);
-      // return response;
+      const response = await api.patch(`/ytd-stats/${id}/`, data);
+      console.log('response', response);
+      if (response.status === 200) {
+        closeModal();
+      }
+      return response;
     } catch (error) {
       console.error('error', error);
     }
