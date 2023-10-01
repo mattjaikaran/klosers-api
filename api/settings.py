@@ -47,7 +47,7 @@ SECRET_KEY = _env_get_required("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = _env_get_required("DEBUG")
 
-ALLOWED_HOSTS = ["localhost", "http://127.0.0.1:3000", "http://localhost:3000"]
+ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
@@ -261,7 +261,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "static/"
 
 STATICFILES_FINDERS = [
