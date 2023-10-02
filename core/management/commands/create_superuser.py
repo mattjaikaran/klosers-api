@@ -2,6 +2,9 @@ import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
+# for local use.
+# pulling data from .env file
+
 
 class Command(BaseCommand):
     help = "Create superuser locally after dropping database"

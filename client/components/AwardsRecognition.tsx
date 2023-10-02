@@ -46,10 +46,14 @@ const AwardsRecognition = ({ data }: { data: any }) => {
       <h5>Awards &amp; Recognition</h5>
       {data.map((award: any) => (
         <p key={award.id}>
-          <Button variant="link" onClick={() => handleShowEditModal(award)}>
+          <Button
+            variant="link"
+            className="text-muted"
+            onClick={() => handleShowEditModal(award)}
+          >
             Edit
           </Button>
-          {award.text}
+          <span>{award.text}</span>
         </p>
       ))}
 

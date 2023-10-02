@@ -4,7 +4,7 @@ from .models import AwardRecognition, YTDStats, CareerStats
 
 
 class YTDStatsAdmin(GenericModelAdmin):
-    list_display = ("title", "quarter", "market", "datetime_created")
+    list_display = ("title", "user", "quarter", "market", "datetime_created")
     readonly_fields = ("id",)
     ordering_fields = "-datetime_created"
 
@@ -12,6 +12,7 @@ class YTDStatsAdmin(GenericModelAdmin):
 class CareerStatsAdmin(GenericModelAdmin):
     list_display = (
         "__str__",
+        "user",
         "year",
         "company",
         "industry",
@@ -23,7 +24,7 @@ class CareerStatsAdmin(GenericModelAdmin):
 
 
 class AwardRecognitionAdmin(GenericModelAdmin):
-    list_display = ("text", "datetime_created")
+    list_display = ("text", "user", "datetime_created")
     readonly_fields = ("id",)
     ordering_fields = "-datetime_created"
 

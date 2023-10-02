@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -12,8 +11,8 @@ import Link from 'next/link';
 
 // const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface RegisterFormInputs {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   username: string;
   email: string;
   password1: string;
@@ -23,8 +22,8 @@ interface RegisterFormInputs {
 
 const schema = yup
   .object({
-    firstName: yup.string().required('First Name is required'),
-    lastName: yup.string().required('Last Name is required'),
+    first_name: yup.string().required('First Name is required'),
+    last_name: yup.string().required('Last Name is required'),
     username: yup.string().required(),
     email: yup.string().required('Email is required').email('Email is invalid'),
     password1: yup
@@ -54,8 +53,8 @@ const RegisterForm = () => {
       console.log('data in onSubmit', data);
       const userInfo = {
         email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
+        first_name: data.first_name,
+        last_name: data.last_name,
         username: data.username,
         password1: data.password1,
         password2: data.password2,
@@ -94,7 +93,7 @@ const RegisterForm = () => {
           <Form.Control
             type="text"
             placeholder="Enter First Name"
-            {...register('firstName')}
+            {...register('first_name')}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="registerFormLastName">
@@ -102,7 +101,7 @@ const RegisterForm = () => {
           <Form.Control
             type="text"
             placeholder="Enter Last Name"
-            {...register('lastName')}
+            {...register('last_name')}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="registerFormUsername">
@@ -145,10 +144,10 @@ const RegisterForm = () => {
       </Form>
       {Object.values(errors).length ? (
         <Alert className="mt-3" variant="danger">
-          {errors.firstName
-            ? errors.firstName.message
-            : errors.lastName
-            ? errors.lastName.message
+          {errors.first_name
+            ? errors.first_name.message
+            : errors.last_name
+            ? errors.last_name.message
             : errors.username
             ? errors.username.message
             : errors.email

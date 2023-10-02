@@ -20,6 +20,10 @@ class YTDStatsViewSet(
     # permission_classes = permissions.IsAuthenticated
     serializer_class = YTDStatsSerializer
 
+    def get_queryset(self):
+        # Filter objects by the authenticated user
+        return CareerStats.objects.filter(user=self.request.user)
+
 
 class CareerStatsViewSet(
     mixins.CreateModelMixin,
@@ -33,6 +37,10 @@ class CareerStatsViewSet(
     # permission_classes = permissions.IsAuthenticated
     serializer_class = CareerStatsSerializer
 
+    def get_queryset(self):
+        # Filter objects by the authenticated user
+        return CareerStats.objects.filter(user=self.request.user)
+
 
 class AwardRecognitionViewSet(
     mixins.CreateModelMixin,
@@ -45,3 +53,7 @@ class AwardRecognitionViewSet(
     queryset = AwardRecognition.objects.all()
     # permission_classes = permissions.IsAuthenticated
     serializer_class = AwardRecognitionSerializer
+
+    def get_queryset(self):
+        # Filter objects by the authenticated user
+        return AwardRecognition.objects.filter(user=self.request.user)

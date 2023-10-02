@@ -19,23 +19,6 @@ export default function Signin() {
         <Container>
           <h3>Sign In</h3>
           <LoginForm />
-          {session ? (
-            <>
-              <p>signed in as {session?.user?.email}</p>
-              <Button onClick={() => signOut()}>Sign out</Button>
-              {/* {session.accessToken && <p>User has access token</p>} */}
-            </>
-          ) : (
-            <>
-              <p>not signed in</p>
-              <Button
-                onClick={() => signIn('google', { callbackUrl: '/profile' })}
-              >
-                Sign In via Google{' '}
-              </Button>
-              <p>{!session && 'User is not logged in'}</p>
-            </>
-          )}
         </Container>
       </MainLayout>
     </>
