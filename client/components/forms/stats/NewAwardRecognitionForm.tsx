@@ -1,12 +1,12 @@
 import useAxios from '@/lib/utils/axios';
+import { useAppSelector } from '@/lib/store/redux';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 export interface AwardRecognitionInputs {
-  quarter: string;
-  company: string;
-  title: string;
+  type: string;
+  text: string;
 }
 
 const NewAwardRecognitionForm = ({ closeModal }: { closeModal: any }) => {
@@ -16,11 +16,22 @@ const NewAwardRecognitionForm = ({ closeModal }: { closeModal: any }) => {
     formState: { errors },
   } = useForm<AwardRecognitionInputs>();
   const api = useAxios();
+  const data: any = useAppSelector((state) => state.auth);
+  const user: any = data.user.data;
 
   const onSubmit: SubmitHandler<AwardRecognitionInputs> = async (data) => {
     try {
       console.log(data);
-      const response = await api.post('/awards-recognition-stats/', data);
+      const newAwardStat = {
+        user: user.id,
+        type: data.type,
+        text: data.text,
+      };
+      console.log('newAwardStat', newAwardStat);
+      const response = await api.post(
+        '/awards-recognition-stats/',
+        newAwardStat
+      );
       console.log('response', response);
       if (response.status === 201) {
         closeModal();
@@ -32,25 +43,17 @@ const NewAwardRecognitionForm = ({ closeModal }: { closeModal: any }) => {
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className="mb-3" controlId="formYTDStatQuarter">
-        <Form.Label>Quarter</Form.Label>
-        <Form.Control type="text" placeholder="Q3" {...register('quarter')} />
+      <Form.Group className="mb-3" controlId="formAwardStatType">
+        <Form.Label>Type</Form.Label>
+        <Form.Control type="text" placeholder="Q3" {...register('type')} />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formYTDStatCompany">
-        <Form.Label>Company</Form.Label>
+      <Form.Group className="mb-3" controlId="formAwardStatText">
+        <Form.Label>Award Text</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter Company"
-          {...register('company')}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formYTDStatTitle">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter Title"
-          {...register('title')}
+          placeholder="Enter Award Text"
+          {...register('text')}
         />
       </Form.Group>
       <div className="mt-4">

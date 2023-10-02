@@ -22,13 +22,23 @@ interface CareerStatsInputs {
 const CareerStatsTable = ({ data }: { data: any }) => {
   const [show, setShow] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [editYtdItem, setEditYtdItem] = useState({});
 
   // Add modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   // Edit modal
-  const handleCloseEditModal = () => setShowEditModal(false);
-  const handleShowEditModal = () => setShowEditModal(true);
+  const handleCloseEditModal = () => {
+    setEditYtdItem({});
+    setShowEditModal(false);
+  };
+  // @ts-ignore
+  const handleShowEditModal = (item: CareerStatsInputs) => {
+    console.log('item', item);
+    setEditYtdItem(item);
+    setShowEditModal(true);
+  };
 
   return (
     <>
@@ -62,16 +72,16 @@ const CareerStatsTable = ({ data }: { data: any }) => {
               <td>{item.company}</td>
               <td>{item.title}</td>
               <td>{item.market}</td>
-              <td>{item.quota_attainment_percent}</td>
-              <td>{item.avg_deal_size}</td>
-              <td>{item.avg_sales_cycle}</td>
+              <td>{item.quota_attainment_percentage}</td>
+              <td>{item.average_deal_size}</td>
+              <td>{item.average_sales_cycle}</td>
               <td>{item.industry}</td>
               <td>{item.leaderboard_rank}</td>
               <td>
                 <Button
                   variant="link"
                   className="text-muted"
-                  onClick={handleShowEditModal}
+                  onClick={() => handleShowEditModal(item)}
                 >
                   Edit
                 </Button>
@@ -87,6 +97,7 @@ const CareerStatsTable = ({ data }: { data: any }) => {
       >
         Add Year
       </Button>
+      {/* New Career Stat Modal */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Career Stat</Modal.Title>
@@ -95,12 +106,16 @@ const CareerStatsTable = ({ data }: { data: any }) => {
           <NewCareerStatForm closeModal={handleClose} />
         </Modal.Body>
       </Modal>
+      {/* Edit Career Stat Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Career Stat</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditCareerStatForm id={'123'} closeModal={handleCloseEditModal} />
+          <EditCareerStatForm
+            item={editYtdItem}
+            closeModal={handleCloseEditModal}
+          />
         </Modal.Body>
       </Modal>
     </>

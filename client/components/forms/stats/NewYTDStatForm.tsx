@@ -2,13 +2,22 @@ import useAxios from '@/lib/utils/axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import {
+  quarterChoices,
+  salesCycleChoices,
+  dealSizeChoices,
+  industryChoices,
+  jobTitleChoices,
+  marketChoices,
+} from './constants';
+import { useAppSelector } from '@/lib/store/redux';
 
 export interface YTDStatInputs {
   quarter: string;
   company: string;
   title: string;
   market: string;
-  percent_quota_attainment: string;
+  quota_attainment_percentage: string;
   avg_deal_size: string;
   avg_sales_cycle: string;
   industry?: string;
@@ -22,23 +31,26 @@ const NewYTDStatForm = ({ closeModal }: { closeModal: any }) => {
     formState: { errors },
   } = useForm<YTDStatInputs>();
   const api = useAxios();
+  const data: any = useAppSelector((state) => state.auth);
+  const user: any = data.user.data;
 
   const onSubmit: SubmitHandler<YTDStatInputs> = async (data) => {
     try {
       console.log(data);
-      const ytdStat = {
+      const newYtdStat = {
+        user: user.id,
         quarter: data.quarter,
         company: data.company,
         title: data.title,
         market: data.market,
-        percent_quota_attainment: data.percent_quota_attainment,
+        quota_attainment_percentage: data.quota_attainment_percentage,
         avg_deal_size: data.avg_deal_size,
         avg_sales_cycle: data.avg_sales_cycle,
         industry: data.industry,
         leaderboard_rank: data.leaderboard_rank,
       };
-      console.log('ytdStat', ytdStat);
-      const response = await api.post('/ytd-stats/', ytdStat);
+      console.log('newYtdStat', newYtdStat);
+      const response = await api.post('/ytd-stats/', newYtdStat);
       console.log('response', response);
       if (response.status === 201) {
         closeModal();
@@ -52,7 +64,14 @@ const NewYTDStatForm = ({ closeModal }: { closeModal: any }) => {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3" controlId="formYTDStatQuarter">
         <Form.Label>Quarter</Form.Label>
-        <Form.Control type="text" placeholder="Q3" {...register('quarter')} />
+        <Form.Select aria-label="Select Quarter" {...register('quarter')}>
+          <option>Select Quarter</option>
+          {quarterChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formYTDStatCompany">
@@ -65,19 +84,25 @@ const NewYTDStatForm = ({ closeModal }: { closeModal: any }) => {
       </Form.Group>
       <Form.Group className="mb-3" controlId="formYTDStatTitle">
         <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter Title"
-          {...register('title')}
-        />
+        <Form.Select aria-label="Select Job Title" {...register('title')}>
+          <option>Select Job Title</option>
+          {jobTitleChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formYTDStatMarket">
         <Form.Label>Market</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter Market Type"
-          {...register('market')}
-        />
+        <Form.Select aria-label="Select Market Type" {...register('market')}>
+          <option>Select Market Type</option>
+          {marketChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
       <Form.Group
         className="mb-3"
@@ -87,24 +112,47 @@ const NewYTDStatForm = ({ closeModal }: { closeModal: any }) => {
         <Form.Control
           type="text"
           placeholder="Enter % Quota Attainment"
-          {...register('percent_quota_attainment')}
+          {...register('quota_attainment_percentage')}
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formYTDStatAvgDealSize">
         <Form.Label>Avg Deal Size</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Avg Deal Size"
+        <Form.Select
+          aria-label="Select Avg Deal Size"
           {...register('avg_deal_size')}
-        />
+        >
+          <option>Select Deal Size</option>
+          {dealSizeChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formYTDStatAvgSalesCycle">
+        <Form.Label>Avg Sales Cycle</Form.Label>
+        <Form.Select
+          aria-label="Select Avg Sales cycle"
+          {...register('avg_sales_cycle')}
+        >
+          <option>Select Deal Size</option>
+          {salesCycleChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formYTDStatIndustry">
         <Form.Label>Industry</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Industry"
-          {...register('industry')}
-        />
+        <Form.Select aria-label="Select Industry" {...register('industry')}>
+          <option>Select Industry</option>
+          {industryChoices.map((title: any) => (
+            <option key={title.value} value={title.value}>
+              {title.label}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formYTDStatLeaderboardRank">
         <Form.Label>Leaderboard Rank</Form.Label>

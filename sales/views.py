@@ -43,5 +43,5 @@ class AwardRecognitionViewSet(
     viewsets.GenericViewSet,
 ):
     queryset = AwardRecognition.objects.all()
-    permission_classes = permissions.IsAuthenticated
+    # permission_classes = permissions.IsAuthenticated
     serializer_class = AwardRecognitionSerializer

@@ -18,8 +18,8 @@ class Command(BaseCommand):
             username=username,
             email=email,
             password=password,
-            # first_name=first_name,
-            # last_name=last_name,
+            first_name=first_name,
+            last_name=last_name,
         )
 
         print(f"super user created successfully")

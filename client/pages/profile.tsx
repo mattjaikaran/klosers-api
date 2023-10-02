@@ -8,25 +8,10 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import YTDStatsTable from '@/components/tables/YTDStatsTable';
 import CareerStatsTable from '@/components/tables/CareerStatsTable';
-import careerStats from '@/data/career-stats.json';
-import ytdStats from '@/data/ytd-stats.json';
 import AwardsRecognition from '@/components/AwardsRecognition';
 import useAxios from '@/lib/utils/axios';
 import { useRouter } from 'next/router';
 import { useAppSelector } from '@/lib/store/redux';
-
-const sampleUserDetails = {
-  id: 1,
-  first_name: 'JD',
-  last_name: 'Reichenbach',
-  full_name: 'JD Reichenbach',
-  title: 'Strategic Account Executive',
-  company: 'NerdWallet',
-  market: 'SMB',
-  all_time_revenue: '4.5m',
-  linkedin_profile: 'https://linkedin.com/in/mattjaikaran',
-  fit_score: 90,
-};
 
 export default function Profile() {
   const api = useAxios();
@@ -41,10 +26,10 @@ export default function Profile() {
       try {
         const ytdResponse = await api.get('/ytd-stats/');
         const careerResponse = await api.get('/career-stats/');
-        // const awardResponse = await api.get('/awards-recognition-stats/');
+        const awardResponse = await api.get('/awards-recognition-stats/');
         setUserYtdStats(ytdResponse.data);
         setUserCareerStats(careerResponse.data);
-        // setUserAwards(awardResponse.data);
+        setUserAwards(awardResponse.data);
       } catch (error) {
         console.error('error', error);
       }
@@ -134,7 +119,7 @@ export default function Profile() {
           <h5>Career Stats</h5>
           <CareerStatsTable data={userCareerStats} />
 
-          <AwardsRecognition />
+          <AwardsRecognition data={userAwards} />
         </Container>
       </AuthLayout>
     </>

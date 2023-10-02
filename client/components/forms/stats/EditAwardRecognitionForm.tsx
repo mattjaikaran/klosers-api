@@ -6,10 +6,10 @@ import { AwardRecognitionInputs } from './NewAwardRecognitionForm';
 
 // wip
 const EditAwardRecognitionForm = ({
-  id,
+  item,
   closeModal,
 }: {
-  id: string;
+  item: any;
   closeModal: any;
 }) => {
   const {
@@ -19,11 +19,13 @@ const EditAwardRecognitionForm = ({
   } = useForm<AwardRecognitionInputs>();
   const api = useAxios();
 
+  console.log('item', item);
+
   const onSubmit: SubmitHandler<AwardRecognitionInputs> = async (data) => {
     try {
       console.log(data);
       const response = await api.patch(
-        `/awards-recognition-stats/${id}/`,
+        `/awards-recognition-stats/${item.id}/`,
         data
       );
       console.log('response', response);
@@ -37,25 +39,23 @@ const EditAwardRecognitionForm = ({
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className="mb-3" controlId="formYTDStatQuarter">
-        <Form.Label>Quarter</Form.Label>
-        <Form.Control type="text" placeholder="Q3" {...register('quarter')} />
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formYTDStatCompany">
-        <Form.Label>Company</Form.Label>
+      <Form.Group className="mb-3" controlId="formEditAwardStatType">
+        <Form.Label>Type</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter Company"
-          {...register('company')}
+          defaultValue={item.type}
+          placeholder="Q3"
+          {...register('type')}
         />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="formYTDStatTitle">
-        <Form.Label>Title</Form.Label>
+
+      <Form.Group className="mb-3" controlId="formEditAwardStatText">
+        <Form.Label>Award Text</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter Title"
-          {...register('title')}
+          defaultValue={item.text}
+          placeholder="Enter Award Text"
+          {...register('text')}
         />
       </Form.Group>
       <div className="mt-4">
