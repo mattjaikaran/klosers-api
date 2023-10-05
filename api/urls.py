@@ -22,7 +22,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls.static import static
 
 from django.views.generic import TemplateView
-from core.views import UserLoginView, UserViewSet
+from core.views import UserViewSet
 from sales.views import AwardRecognitionViewSet, CareerStatsViewSet, YTDStatsViewSet
 from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
@@ -33,7 +33,7 @@ from rest_framework_simplejwt.views import TokenVerifyView
 router = routers.SimpleRouter()
 admin.site.site_header = "Kloser Admin"
 admin.site.site_title = "Kloser Admin Panel"
-admin.site.index_title = "Dashboard"
+admin.site.index_title = "Welcome to Klosers Admin Panel"
 
 router.register(r"users", UserViewSet)
 router.register(r"ytd-stats", YTDStatsViewSet)

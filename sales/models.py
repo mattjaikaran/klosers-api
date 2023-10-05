@@ -28,7 +28,6 @@ class YTDStats(AbstractBaseModel):
     average_sales_cycle = models.CharField(
         max_length=100, choices=constants.SALES_CYCLE_CHOICES, default="<30"
     )
-    leaderboard_rank = models.PositiveIntegerField()
     industry = models.CharField(
         max_length=50, choices=constants.INDUSTRY_CHOICES, default="IT"
     )
@@ -64,7 +63,6 @@ class CareerStats(AbstractBaseModel):
     average_sales_cycle = models.CharField(
         max_length=100, choices=constants.SALES_CYCLE_CHOICES, default="<30"
     )
-    leaderboard_rank = models.PositiveIntegerField(null=True)
     industry = models.CharField(
         max_length=50, choices=constants.INDUSTRY_CHOICES, default="IT"
     )

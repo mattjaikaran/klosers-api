@@ -22,7 +22,7 @@ class YTDStatsViewSet(
 
     def get_queryset(self):
         # Filter objects by the authenticated user
-        return CareerStats.objects.filter(user=self.request.user)
+        return YTDStats.objects.filter(user=self.request.user)
 
 
 class CareerStatsViewSet(

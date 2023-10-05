@@ -4,7 +4,15 @@ from .models import AwardRecognition, YTDStats, CareerStats
 
 
 class YTDStatsAdmin(GenericModelAdmin):
-    list_display = ("title", "user", "quarter", "market", "datetime_created")
+    list_display = (
+        "title",
+        "user",
+        "quarter",
+        "company",
+        "market",
+        "quota_verified",
+        "datetime_created",
+    )
     readonly_fields = ("id",)
     ordering_fields = "-datetime_created"
 
