@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 
 from django.views.generic import TemplateView
 from core.views import UserViewSet
-from sales.views import AwardRecognitionViewSet, CareerStatsViewSet, YTDStatsViewSet
+from sales.views import AwardRecognitionViewSet, CareerStatViewSet, YTDStatViewSet
 from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 from core.views import GoogleLoginView
@@ -36,8 +36,8 @@ admin.site.site_title = "Kloser Admin Panel"
 admin.site.index_title = "Welcome to Klosers Admin Panel"
 
 router.register(r"users", UserViewSet)
-router.register(r"ytd-stats", YTDStatsViewSet)
-router.register(r"career-stats", CareerStatsViewSet)
+router.register(r"ytd-stats", YTDStatViewSet)
+router.register(r"career-stats", CareerStatViewSet)
 router.register(r"awards-recognition-stats", AwardRecognitionViewSet)
 
 urlpatterns = [

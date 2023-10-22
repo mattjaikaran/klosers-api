@@ -46,6 +46,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     all_time_revenue = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     linkedin_profile = models.URLField(null=True, blank=True)
     user_fit_score = models.IntegerField(default=0)
+    # leaderboard_access = models.BooleanField(default=False)
 
     @property
     def full_name(self):

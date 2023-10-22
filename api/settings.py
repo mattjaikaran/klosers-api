@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "django.contrib.sites",
+    "import_export",
     # authentication
     "allauth",
     "allauth.account",

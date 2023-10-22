@@ -2,13 +2,13 @@ from rest_framework import mixins, viewsets, permissions
 
 from .serializers import (
     AwardRecognitionSerializer,
-    CareerStatsSerializer,
-    YTDStatsSerializer,
+    CareerStatSerializer,
+    YTDStatSerializer,
 )
-from .models import AwardRecognition, YTDStats, CareerStats
+from .models import AwardRecognition, YTDStat, CareerStat
 
 
-class YTDStatsViewSet(
+class YTDStatViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -16,16 +16,16 @@ class YTDStatsViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = YTDStats.objects.all()
+    queryset = YTDStat.objects.all()
     # permission_classes = permissions.IsAuthenticated
-    serializer_class = YTDStatsSerializer
+    serializer_class = YTDStatSerializer
 
     def get_queryset(self):
         # Filter objects by the authenticated user
-        return YTDStats.objects.filter(user=self.request.user)
+        return YTDStat.objects.filter(user=self.request.user)
 
 
-class CareerStatsViewSet(
+class CareerStatViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -33,13 +33,13 @@ class CareerStatsViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = CareerStats.objects.all()
+    queryset = CareerStat.objects.all()
     # permission_classes = permissions.IsAuthenticated
-    serializer_class = CareerStatsSerializer
+    serializer_class = CareerStatSerializer
 
     def get_queryset(self):
         # Filter objects by the authenticated user
-        return CareerStats.objects.filter(user=self.request.user)
+        return CareerStat.objects.filter(user=self.request.user)
 
 
 class AwardRecognitionViewSet(

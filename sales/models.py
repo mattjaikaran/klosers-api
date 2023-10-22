@@ -4,7 +4,7 @@ from core.models import CustomUser
 from . import constants
 
 
-class YTDStats(AbstractBaseModel):
+class YTDStat(AbstractBaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     quota_verified = models.BooleanField(default=False)
     quarter = models.PositiveIntegerField(choices=constants.QUARTER_CHOICES, default=1)
@@ -39,7 +39,7 @@ class YTDStats(AbstractBaseModel):
         verbose_name_plural = "YTD Stats"
 
 
-class CareerStats(AbstractBaseModel):
+class CareerStat(AbstractBaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     quota_verified = models.BooleanField(default=False)
     year = models.PositiveIntegerField(default=2023)
