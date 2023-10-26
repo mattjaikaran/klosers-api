@@ -29,7 +29,7 @@ class CareerStatAdmin(ImportExportModelAdmin):
         "datetime_created",
     )
     readonly_fields = ("id",)
-    ordering_fields = "-datetime_created"
+    ordering_fields = "-year"
 
 
 class AwardRecognitionAdmin(ImportExportModelAdmin):

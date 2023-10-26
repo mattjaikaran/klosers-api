@@ -19,6 +19,7 @@ class YTDStatViewSet(
     queryset = YTDStat.objects.all()
     # permission_classes = permissions.IsAuthenticated
     serializer_class = YTDStatSerializer
+    ordering_fields = "-quarter"
 
     def get_queryset(self):
         # Filter objects by the authenticated user
@@ -36,6 +37,7 @@ class CareerStatViewSet(
     queryset = CareerStat.objects.all()
     # permission_classes = permissions.IsAuthenticated
     serializer_class = CareerStatSerializer
+    ordering_fields = "-year"
 
     def get_queryset(self):
         # Filter objects by the authenticated user

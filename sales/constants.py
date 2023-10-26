@@ -73,6 +73,9 @@ CUSTOMER_EXPERIENCE_MANAGER = "Customer Experience Manager"
 DATA_ANALYST = "Data Analyst"
 USER_ACQ_MANAGER = "User Acquisition Manager"
 DEMAND_GENERATION_SPECIALIST = "Demand Generation Specialist"
+SDR_MANAGER = "SDR Manager"
+BDR_MANAGER = "BDR Manager"
+OTHER = "Other"
 
 JOB_TITLE_CHOICES = (
     (CRO, "Chief Revenue Officer (CRO)"),
@@ -105,6 +108,9 @@ JOB_TITLE_CHOICES = (
     (DATA_ANALYST, "Data Analyst"),
     (USER_ACQ_MANAGER, "User Acquisition Manager"),
     (DEMAND_GENERATION_SPECIALIST, "Demand Generation Specialist"),
+    (SDR_MANAGER, "SDR Manager"),
+    (BDR_MANAGER, "BDR Manager"),
+    (OTHER, "Other"),
 )
 
 

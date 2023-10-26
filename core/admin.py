@@ -5,7 +5,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(GenericModelAdmin):
     list_display = ("username", "first_name", "last_name", "email", "id")
-    readonly_fields= ('password', 'id')
+    readonly_fields = ("password", "id", "is_superuser")
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

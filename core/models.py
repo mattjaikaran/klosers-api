@@ -46,7 +46,19 @@ class CustomUser(AbstractUser, PermissionsMixin):
     all_time_revenue = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     linkedin_profile = models.URLField(null=True, blank=True)
     user_fit_score = models.IntegerField(default=0)
-    # leaderboard_access = models.BooleanField(default=False)
+
+    user_status = models.CharField(
+        max_length=50,
+        choices=constants.USER_STATUS_CHOICES,
+        default=constants.OPEN_TO_OPPORTUNITIES,
+    )
+
+    # Sales Rep or a Company wanting access to the leaderboard
+    is_sales_rep = models.BooleanField(default=True)
+    is_company = models.BooleanField(default=False)
+    leaderboard_access = models.BooleanField(default=False)
+
+    about = models.TextField(max_length=512, blank=True)
 
     @property
     def full_name(self):
