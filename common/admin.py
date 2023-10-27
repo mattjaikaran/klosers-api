@@ -29,5 +29,5 @@ class GenericModelAdmin(admin.ModelAdmin):
             or (type(field) is models.CharField and field.choices is not None)
         ]
 
-    # def has_delete_permission(self, request, obj=None) -> bool:
-    #     return not request.user.is_customer_support
+    def has_delete_permission(self, request, obj=None) -> bool:
+        return not request.user.is_staff or request.user.is_superuser
