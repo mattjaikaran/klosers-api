@@ -9,8 +9,7 @@ class CustomUserModelManager(BaseUserManager):
         Creates a custom user with the given fields
         """
         user = self.model(
-            username=username,
-            email=self.normalize_email(email),
+            username=username, email=self.normalize_email(email), **extra_fields
         )
 
         user.set_password(password)
@@ -19,11 +18,7 @@ class CustomUserModelManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password, **extra_fields):
-        user = self.create_user(
-            username,
-            email,
-            password=password,
-        )
+        user = self.create_user(username, email, password=password, **extra_fields)
 
         user.is_staff = True
         user.is_superuser = True

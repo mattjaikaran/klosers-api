@@ -49,7 +49,6 @@ class UserLoginView(generics.CreateAPIView):
         """
         Validate user credentials, login, and return serialized user + auth token.
         """
-        print(f"request.data => {request.data}")
         serializer = self.serializer_class(data=request.data)
         print(f"serializer => {serializer}")
         serializer.is_valid(raise_exception=True)
