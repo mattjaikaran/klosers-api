@@ -42,6 +42,8 @@ class CustomUser(AbstractUser, PermissionsMixin):
     linkedin_profile = models.URLField(null=True, blank=True)
     user_fit_score = models.IntegerField(default=0)
 
+    # references = models.CharField(max_length=150, blank=True)
+
     user_status = models.CharField(
         max_length=50,
         choices=constants.USER_STATUS_CHOICES,

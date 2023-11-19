@@ -4,7 +4,7 @@ from .models import AwardRecognition, YTDStat, CareerStat
 from import_export.admin import ImportExportModelAdmin
 
 
-class YTDStatAdmin(ImportExportModelAdmin):
+class YTDStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
     list_display = (
         "title",
         "user",
@@ -18,7 +18,7 @@ class YTDStatAdmin(ImportExportModelAdmin):
     ordering_fields = "-datetime_created"
 
 
-class CareerStatAdmin(ImportExportModelAdmin):
+class CareerStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
     list_display = (
         "__str__",
         "user",
@@ -32,7 +32,7 @@ class CareerStatAdmin(ImportExportModelAdmin):
     ordering_fields = "-year"
 
 
-class AwardRecognitionAdmin(ImportExportModelAdmin):
+class AwardRecognitionAdmin(GenericModelAdmin, ImportExportModelAdmin):
     list_display = ("text", "user", "datetime_created")
     readonly_fields = ("id",)
     ordering_fields = "-datetime_created"
