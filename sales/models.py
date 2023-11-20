@@ -19,6 +19,7 @@ class YTDStat(AbstractBaseModel):
         choices=constants.MARKET_CHOICES,
         default=constants.SMALL_BUSINESS,
     )
+    quota = models.IntegerField(default=0)
     quota_attainment_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     average_deal_size = models.CharField(
         max_length=100,
@@ -54,6 +55,7 @@ class CareerStat(AbstractBaseModel):
         choices=constants.MARKET_CHOICES,
         default=constants.SMALL_BUSINESS,
     )
+    quota = models.IntegerField(default=0)
     quota_attainment_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     average_deal_size = models.CharField(
         max_length=100,

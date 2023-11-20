@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
+
+from common.models import AbstractBaseModel
 from . import constants
 
 
@@ -42,7 +44,8 @@ class CustomUser(AbstractUser, PermissionsMixin):
     linkedin_profile = models.URLField(null=True, blank=True)
     user_fit_score = models.IntegerField(default=0)
 
-    # references = models.CharField(max_length=150, blank=True)
+    # references
+    references = models.ManyToManyField("Reference", blank=True)
 
     user_status = models.CharField(
         max_length=50,
@@ -70,4 +73,18 @@ class CustomUser(AbstractUser, PermissionsMixin):
     objects = CustomUserModelManager()
 
     class Meta:
-        verbose_name = "Custom User"
+        verbose_name = "User"
+
+
+class Reference(AbstractBaseModel):
+    first_name = models.CharField(("First Name"), max_length=50)
+    last_name = models.CharField(("Last Name"), max_length=50)
+    email = models.EmailField(max_length=100)
+    phone = models.CharField(max_length=20, blank=True)
+
+    @property
+    def full_name(self):
+        return "{self.first_name} + {self.last_name}"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

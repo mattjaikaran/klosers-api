@@ -1,6 +1,6 @@
 from django.contrib import admin
 from common.admin import GenericModelAdmin
-from .models import CustomUser
+from .models import CustomUser, Reference
 
 
 class CustomUserAdmin(GenericModelAdmin):
@@ -16,4 +16,14 @@ class CustomUserAdmin(GenericModelAdmin):
     ordering = ("username",)
 
 
+class ReferenceAdmin(GenericModelAdmin):
+    list_display = (
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+    )
+
+
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Reference, ReferenceAdmin)
