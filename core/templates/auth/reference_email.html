@@ -1,0 +1,18 @@
+{% load i18n %} {% autoescape off %} {% block html_body %} {% blocktrans %}
+<p>Hello {{ reference_first_name }},</p>
+{% endblocktrans %}
+<p>
+    {{ user_first_name }} just signed up for Klosers and they added you as a reference. 
+    Click here view {{ user_first_name }}'s numbers and verify.
+</p>
+
+
+<p>
+    <a href="{{ site_url }}user/{{ username }}" style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block;">Verify</a>
+</p>
+
+<p>
+    {% trans "Thank you." %}
+</p>
+<p>Klosers Team</p>
+{% endblock html_body %} {% endautoescape %}

@@ -281,6 +281,21 @@ STATICFILES_FINDERS = [
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
+#
+# Email settings
+#
+USE_CUSTOM_SMTP = os.environ.get("USE_CUSTOM_SMTP")
+if USE_CUSTOM_SMTP == "True":
+    EMAIL_HOST = _env_get_required("SMTP_HOST")
+    EMAIL_PORT = os.environ.get("SMTP_PORT", 587)
+    EMAIL_HOST_USER = _env_get_required("SMTP_USER")
+    EMAIL_HOST_PASSWORD = _env_get_required("SMTP_PASSWORD")
+    EMAIL_ALLOWED_DOMAINS = _env_get_required("SMTP_VALID_TESTING_DOMAINS")
+    EMAIL_USE_TLS = True
+    MAILGUN_WEBHOOK_SIGNING_KEY = _env_get_required("MAILGUN_WEBHOOK_SIGNING_KEY")
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
