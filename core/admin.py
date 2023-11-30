@@ -14,6 +14,7 @@ class CustomUserAdmin(GenericModelAdmin):
     readonly_fields = ("password", "id", "is_superuser")
     search_fields = ("username", "first_name", "last_name", "email")
     ordering = ("username",)
+    exclude = ("password",)
 
 
 class ReferenceAdmin(GenericModelAdmin):

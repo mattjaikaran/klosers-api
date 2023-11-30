@@ -48,10 +48,10 @@ urlpatterns = [
     path("api/auth/google/", GoogleLoginView.as_view(), name="google_login"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("token/refresh/", get_refresh_view().as_view(), name="token_refresh"),
-    path("api/auth/register/", RegisterView.as_view(), name="rest_register"),
-    path("api/auth/login/", LoginView.as_view(), name="rest_login"),
-    path("api/auth/logout/", LogoutView.as_view(), name="rest_logout"),
-    path("api/auth/user/", UserDetailsView.as_view(), name="rest_user_details"),
+    path("api/register/", RegisterView.as_view(), name="rest_register"),
+    path("api/login/", LoginView.as_view(), name="rest_login"),
+    path("api/logout/", LogoutView.as_view(), name="rest_logout"),
+    path("api/user/", UserDetailsView.as_view(), name="rest_user_details"),
 ]
 
 urlpatterns += (path("api/", include(router.urls)),)

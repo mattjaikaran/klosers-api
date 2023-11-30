@@ -50,6 +50,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ("email", "password")
+        exclude = ("password",)
 
     def validate(self, data):
         print(f"data in validate => {data}")
@@ -102,6 +103,8 @@ class RegisterSerializer(serializers.Serializer):
     def get_cleaned_data(self):
         return {
             "email": self.validated_data.get("email", ""),
+            "first_name": self.validated_data.get("first_name", ""),
+            "last_name": self.validated_data.get("last_name", ""),
             "password1": self.validated_data.get("password1", ""),
             "password2": self.validated_data.get("password2", ""),
         }
