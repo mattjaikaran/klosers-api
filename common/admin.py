@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.db import models
+from import_export.admin import ImportExportModelAdmin
+from unfold.admin import ModelAdmin
 
 
-class GenericModelAdmin(admin.ModelAdmin):
+class GenericModelAdmin(ImportExportModelAdmin, ModelAdmin, admin.ModelAdmin):
     """
     Generic Model Admin with default fields for search and filter options.
     Search filter for name field

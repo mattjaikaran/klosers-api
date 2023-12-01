@@ -49,7 +49,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ("email", "password")
+        fields = "__all__"
         exclude = ("password",)
 
     def validate(self, data):

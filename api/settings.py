@@ -63,6 +63,8 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Django apps
+    "unfold",  # for new admin panel. must be above django.contrib.admin
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -173,7 +175,8 @@ REST_AUTH = {
     "JWT_SERIALIZER": "dj_rest_auth.serializers.JWTSerializer",
     "JWT_SERIALIZER_WITH_EXPIRATION": "dj_rest_auth.serializers.JWTSerializerWithExpiration",
     "JWT_TOKEN_CLAIMS_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-    "USER_DETAILS_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
+    # "USER_DETAILS_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
+    "USER_DETAILS_SERIALIZER": "core.serializers.CustomUserSerializer",
     "PASSWORD_RESET_SERIALIZER": "dj_rest_auth.serializers.PasswordResetSerializer",
     "PASSWORD_RESET_CONFIRM_SERIALIZER": "dj_rest_auth.serializers.PasswordResetConfirmSerializer",
     "PASSWORD_CHANGE_SERIALIZER": "dj_rest_auth.serializers.PasswordChangeSerializer",
@@ -202,6 +205,7 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+
 SITE_ID = 1  # Needed for allauth
 REST_USE_JWT = True  # to use JSON web tokens
 
@@ -217,7 +221,6 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS512",
 }
 
-REST_AUTH_SERIALIZERS = {"USER_DETAILS_SERIALIZER": "core.CustomUserSerializer"}
 
 # Rest Framework settings
 REST_FRAMEWORK = {

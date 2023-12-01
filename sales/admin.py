@@ -1,10 +1,9 @@
 from django.contrib import admin
 from common.admin import GenericModelAdmin
 from .models import AwardRecognition, YTDStat, CareerStat
-from import_export.admin import ImportExportModelAdmin
 
 
-class YTDStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
+class YTDStatAdmin(GenericModelAdmin):
     list_display = (
         "title",
         "user",
@@ -19,7 +18,7 @@ class YTDStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
     ordering_fields = "-datetime_created"
 
 
-class CareerStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
+class CareerStatAdmin(GenericModelAdmin):
     list_display = (
         "__str__",
         "user",
@@ -34,7 +33,7 @@ class CareerStatAdmin(GenericModelAdmin, ImportExportModelAdmin):
     ordering_fields = "-year"
 
 
-class AwardRecognitionAdmin(GenericModelAdmin, ImportExportModelAdmin):
+class AwardRecognitionAdmin(GenericModelAdmin):
     list_display = ("text", "user", "datetime_created")
     readonly_fields = ("id",)
     ordering_fields = "-datetime_created"
