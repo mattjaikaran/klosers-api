@@ -25,6 +25,7 @@ class CustomUserModelManager(BaseUserManager):
 
         user.is_staff = True
         user.is_superuser = True
+        user.leaderboard_access = True
         user.save(using=self._db)
 
         return user
@@ -67,7 +68,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     @property
     def full_name(self):
-        return "{self.first_name} + {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "first_name", "last_name"]
@@ -89,7 +90,7 @@ class Reference(AbstractBaseModel):
 
     @property
     def full_name(self):
-        return "{self.first_name} + {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

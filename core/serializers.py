@@ -85,6 +85,7 @@ class RegisterSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         email = get_adapter().clean_email(value)
+        print(f"email in validate_email => {email}")
         # if allauth_settings.UNIQUE_EMAIL:
         #     if email and email_address_exists(email):
         #         raise serializers.ValidationError(

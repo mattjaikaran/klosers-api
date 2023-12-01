@@ -22,7 +22,7 @@ class YTDStatViewSet(
 
     def get_queryset(self):
         # Filter objects by the authenticated user
-        return YTDStat.objects.filter(user=self.request.user)
+        return YTDStat.objects.all()
 
 
 class LeaderboardViewSet(

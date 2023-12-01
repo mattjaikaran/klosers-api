@@ -86,7 +86,7 @@ def send_html_email(subject, template, send_from, send_to, context={}, bcc_email
 
 
 # send an automated email to the references when a user signs up
-# WIP
+# WIfP
 def send_reference_email(context):
     print(f"context in send_reference_email => {context}")
     subject_context = {
