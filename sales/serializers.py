@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import AwardRecognition, YTDStat, CareerStat
+from .models import AwardRecognition, Stat, YTDStat, CareerStat
 
 
 class YTDStatSerializer(serializers.ModelSerializer):
@@ -11,6 +11,12 @@ class YTDStatSerializer(serializers.ModelSerializer):
 class CareerStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = CareerStat
+        fields = "__all__"
+
+
+class StatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stat
         fields = "__all__"
 
 

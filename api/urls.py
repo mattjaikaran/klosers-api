@@ -27,6 +27,7 @@ from sales.views import (
     AwardRecognitionViewSet,
     CareerStatViewSet,
     LeaderboardViewSet,
+    StatViewSet,
     YTDStatViewSet,
 )
 from dj_rest_auth.registration.views import RegisterView
@@ -44,6 +45,7 @@ router.register(r"users", UserViewSet)
 router.register(r"awards-recognition-stats", AwardRecognitionViewSet)
 router.register(r"career-stats", CareerStatViewSet)
 router.register(r"ytd-stats", YTDStatViewSet)
+router.register(r"stats", StatViewSet)
 router.register(r"leaderboard", LeaderboardViewSet)
 
 urlpatterns = [

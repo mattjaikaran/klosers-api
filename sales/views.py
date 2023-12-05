@@ -3,9 +3,10 @@ from rest_framework import mixins, viewsets
 from .serializers import (
     AwardRecognitionSerializer,
     CareerStatSerializer,
+    StatSerializer,
     YTDStatSerializer,
 )
-from .models import AwardRecognition, YTDStat, CareerStat
+from .models import AwardRecognition, Stat, YTDStat, CareerStat
 
 
 class YTDStatViewSet(
@@ -53,6 +54,24 @@ class CareerStatViewSet(
     def get_queryset(self):
         # Filter objects by the authenticated user
         return CareerStat.objects.filter(user=self.request.user)
+
+
+# new stat
+class StatViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Stat.objects.all()
+    serializer_class = StatSerializer
+    ordering_fields = "-year"
+
+    def get_queryset(self):
+        # Filter objects by the authenticated user
+        return Stat.objects.filter(user=self.request.user)
 
 
 class AwardRecognitionViewSet(
