@@ -32,7 +32,7 @@ class LeaderboardViewSet(
 ):
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
-    ordering_fields = "-quarter"
+    ordering_fields = "-average_deal_size"
 
     def get_queryset(self):
         # Filter objects by the authenticated user

@@ -272,7 +272,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
@@ -316,21 +316,31 @@ MANAGERS = ADMINS
 
 
 # Django Storages S3 settings
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "storages.backends.s3.S3Storage",
-#         "OPTIONS": {},
-#     },
-# }
 
 # DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 # STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-AWS_ACCESS_KEY_ID = _env_get_required("AWS_ACCESS_KEY_ID")
-AWS_STORAGE_BUCKET_NAME = _env_get_required("AWS_STORAGE_BUCKET_NAME")
-AWS_SECRET_ACCESS_KEY = _env_get_required("AWS_SECRET_ACCESS_KEY")
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com"
-AWS_LOCATION = os.environ.get("AWS_LOCATION", "")
-AWS_S3_REGION_NAME = _env_get_required("AWS_S3_REGION_NAME")
-AWS_DEFAULT_ACL = "public-read"
-AWS_S3_SIGNATURE_VERSION = "s3v4"
+# USE_AWS_STORAGE = os.environ.get("USE_AWS_STORAGE") == "True"
+# PRIVATE_MEDIAFILES_LOCATION = ""
+
+# if USE_AWS_STORAGE:
+#     AWS_ACCESS_KEY_ID = _env_get_required("AWS_ACCESS_KEY_ID")
+#     AWS_STORAGE_BUCKET_NAME = _env_get_required("AWS_STORAGE_BUCKET_NAME")
+#     AWS_SECRET_ACCESS_KEY = _env_get_required("AWS_SECRET_ACCESS_KEY")
+#     AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com"
+#     AWS_LOCATION = os.environ.get("AWS_LOCATION", "")
+#     AWS_S3_REGION_NAME = _env_get_required("AWS_S3_REGION_NAME")
+#     AWS_DEFAULT_ACL = "public-read"
+#     AWS_S3_SIGNATURE_VERSION = "s3v4"
+
+#     # Default file storage is private
+#     PRIVATE_MEDIAFILES_LOCATION = AWS_LOCATION + "/media"
+#     DEFAULT_FILE_STORAGE = "core.handlers.PrivateMediaStorage"
+
+#
+# HTTPS Everywhere outside the dev environment
+#
+if not IN_DEV:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    MIDDLEWARE += ["django.middleware.security.SecurityMiddleware"]
