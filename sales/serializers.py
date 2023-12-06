@@ -19,6 +19,11 @@ class StatSerializer(serializers.ModelSerializer):
         model = Stat
         fields = "__all__"
 
+    def create(self, validated_data):
+        print(f"validated_data => {validated_data}")
+        stat = Stat.objects.create(**validated_data)
+        return stat
+
 
 class AwardRecognitionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -30,13 +30,13 @@ class LeaderboardViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = YTDStat.objects.all()
-    serializer_class = YTDStatSerializer
+    queryset = Stat.objects.all()
+    serializer_class = StatSerializer
     ordering_fields = "-quarter"
 
     def get_queryset(self):
         # Filter objects by the authenticated user
-        return YTDStat.objects.all()
+        return Stat.objects.all()
 
 
 class CareerStatViewSet(
@@ -67,7 +67,7 @@ class StatViewSet(
 ):
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
-    ordering_fields = "-year"
+    ordering_fields = "-datetime_created"
 
     def get_queryset(self):
         # Filter objects by the authenticated user

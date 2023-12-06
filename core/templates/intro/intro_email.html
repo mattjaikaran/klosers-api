@@ -1,0 +1,25 @@
+{% load i18n %} {% autoescape off %} {% block html_body %} {% blocktrans %}
+<p>Hello {{ reference_first_name }}!</p>
+{% endblocktrans %}
+<p>
+    We're excited to share that you've been chosen as a reference for  {{ user_first_name }} {{ user_last_name }} in the <a href="https://www.joinklosers.com" style="background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block;">Kloser Network</a>, a free marketplace for sales professionals to leverage attainment data to find new opportunities :money_with_wings:.
+</p>
+
+<p>
+    Your insight is invaluable in verifying  {{ user_first_name }}  sales achievements, a key step in their journey on the platform.
+</p>
+
+
+<p>Next Steps:</p>
+<p>
+    <ol>
+        <li>REPLY to this email that you agree to be a reference and can attest to {{ user_first_name }} {{ user_last_name }} past seller performance.</li>
+        <li>Join us! Signing up for Kloser Network is simple and FREE. Your expertise not only supports {{ user_first_name }} {{ user_last_name }} but also opens doors to new opportunities for you :the_horns:.</li>
+    </ol>
+</p>
+
+<p>
+    {% trans "Thank you for your contribution," %}
+</p>
+<p>The Kloser Team :rocket:</p>
+{% endblock html_body %} {% endautoescape %}

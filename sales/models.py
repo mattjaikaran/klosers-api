@@ -109,22 +109,22 @@ class Stat(AbstractBaseModel):
     def calculate_average_deal_size(self):
         # Define your range and calculate the average deal size
         # This is just an example, replace with your own logic
-        if self.deal_size >= 0 and self.deal_size < 1000:
-            return self.deal_size
-        elif self.deal_size >= 1000 and self.deal_size < 5000:
-            return self.deal_size / 2
+        if self.average_deal_size >= 0 and self.average_deal_size < 1000:
+            return self.average_deal_size
+        elif self.average_deal_size >= 1000 and self.average_deal_size < 5000:
+            return self.average_deal_size / 2
         else:
-            return self.deal_size / 3
+            return self.average_deal_size / 3
 
     def calculate_average_sales_cycle(self):
         # Define your range and calculate the average sales cycle
         # This is just an example, replace with your own logic
-        if self.sales_cycle >= 0 and self.sales_cycle < 30:
-            return self.sales_cycle
-        elif self.sales_cycle >= 30 and self.sales_cycle < 90:
-            return self.sales_cycle / 2
+        if self.average_sales_cycle >= 0 and self.average_sales_cycle < 30:
+            return self.average_sales_cycle
+        elif self.average_sales_cycle >= 30 and self.average_sales_cycle < 90:
+            return self.average_sales_cycle / 2
         else:
-            return self.sales_cycle / 3
+            return self.average_sales_cycle / 3
 
     class Meta:
         verbose_name_plural = "Stats"
