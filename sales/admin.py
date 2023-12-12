@@ -1,6 +1,6 @@
 from django.contrib import admin
 from common.admin import GenericModelAdmin
-from .models import AwardRecognition, Stat, YTDStat, CareerStat
+from .models import AwardRecognition, Stat
 
 
 # class YTDStatAdmin(GenericModelAdmin):
@@ -35,8 +35,8 @@ from .models import AwardRecognition, Stat, YTDStat, CareerStat
 
 class StatAdmin(GenericModelAdmin):
     list_display = (
-        "title",
         "user",
+        "title",
         "quarter",
         "year",
         "quota",

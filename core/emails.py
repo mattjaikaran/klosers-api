@@ -82,18 +82,20 @@ def send_reference_email(context):
     send_html_email(
         subject=reference_subject,
         template="auth/reference_email.html",
-        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_from=_env_get_required("REFERENCE_EMAIL"),
         send_to=[context["email"]],
         context=context,
+        bcc_emails=[_env_get_required("REFERENCE_EMAIL")],
     )
 
 
+# WIP
 # send intro email from leaderboard cta
+# user (company) sends an intro to the
 def send_intro_email(context):
     print(f"context in send_intro_email => {context}")
     subject_context = {
         "environment": settings.ENVIRONMENT.upper(),
-        "reference_first_name": context["reference_first_name"],
         "user_first_name": context["user_first_name"],
         "user_last_name": context["user_last_name"],
     }
@@ -101,9 +103,10 @@ def send_intro_email(context):
     send_html_email(
         subject=intro_subject,
         template="intro/intro_email.html",
-        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_from=_env_get_required("INTRO_EMAIL"),
         send_to=[context["email"]],
         context=context,
+        bcc_emails=[_env_get_required("INTRO_EMAIL")],
     )
 
 

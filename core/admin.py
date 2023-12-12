@@ -1,6 +1,6 @@
 from django.contrib import admin
 from common.admin import GenericModelAdmin
-from .models import CustomUser, Reference
+from .models import CustomUser, Intro, Reference
 
 
 class CustomUserAdmin(GenericModelAdmin):
@@ -25,8 +25,21 @@ class ReferenceAdmin(GenericModelAdmin):
         "last_name",
         "email",
         "phone",
+        "id",
+        "datetime_created",
+    )
+
+
+class IntroAdmin(GenericModelAdmin):
+    list_display = (
+        "message",
+        "user_to",
+        "user_from",
+        "id",
+        "datetime_created",
     )
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Reference, ReferenceAdmin)
+admin.site.register(Intro, IntroAdmin)

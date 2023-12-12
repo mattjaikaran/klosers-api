@@ -16,8 +16,13 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from .models import CustomUser
-from .serializers import CustomUserSerializer, UserLoginSerializer
+from .models import CustomUser, Intro, Reference
+from .serializers import (
+    CustomUserSerializer,
+    IntroSerializer,
+    ReferenceSerializer,
+    UserLoginSerializer,
+)
 
 
 class GenericViewSetNoDestroy(
@@ -92,3 +97,31 @@ class GoogleLoginView(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
     callback_url = "http://localhost:3000/"  # front end
     client_class = OAuth2Client
+
+
+class ReferenceViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Reference.objects.all()
+    serializer_class = ReferenceSerializer
+    authentication_classes = ()
+    permission_classes = ()
+
+
+class IntroViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Intro.objects.all()
+    serializer_class = IntroSerializer
+    authentication_classes = ()
+    permission_classes = ()

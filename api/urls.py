@@ -22,13 +22,11 @@ from rest_framework.authtoken.views import obtain_auth_token
 from django.conf.urls.static import static
 
 from django.views.generic import TemplateView
-from core.views import UserViewSet
+from core.views import IntroViewSet, ReferenceViewSet, UserViewSet
 from sales.views import (
     AwardRecognitionViewSet,
-    CareerStatViewSet,
     LeaderboardViewSet,
     StatViewSet,
-    YTDStatViewSet,
 )
 from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
@@ -42,11 +40,12 @@ admin.site.site_title = "Kloser Admin Panel"
 admin.site.index_title = "Welcome to Klosers Admin Panel"
 
 router.register(r"users", UserViewSet)
-router.register(r"awards-recognition-stats", AwardRecognitionViewSet)
-# router.register(r"career-stats", CareerStatViewSet)
-# router.register(r"ytd-stats", YTDStatViewSet)
+router.register(r"awards", AwardRecognitionViewSet)
+router.register(r"references", ReferenceViewSet)
 router.register(r"stats", StatViewSet)
 router.register(r"leaderboard", LeaderboardViewSet)
+# request intro
+router.register(r"intros", IntroViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

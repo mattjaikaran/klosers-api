@@ -1,27 +1,74 @@
-from datetime import datetime
-from .models import CustomUser
+from core.emails import send_intro_email
+from .models import CustomUser, Intro, Reference
 from django.contrib.auth.password_validation import validate_password
 
 from django.core.exceptions import ValidationError
 from django.contrib.auth import login
 
-# from drf_writable_nested.serializers import WritableNestedModelSerializer
-
-from rest_framework import serializers, exceptions, status
-from rest_framework.response import Response
+from rest_framework import serializers, exceptions
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.tokens import default_token_generator
-
-# from rest_auth.serializers import PasswordResetSerializer
 
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 
 
+class ReferenceSerializer(serializers.ModelSerializer):
+    user_id = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Reference
+        fields = ("id", "first_name", "last_name", "email", "phone", "user_id")
+
+    def create(self, validated_data):
+        print(f"validated_data in ReferenceSerializer => {validated_data}")
+        try:
+            reference = Reference.objects.create(
+                first_name=validated_data["first_name"],
+                last_name=validated_data["last_name"],
+                email=validated_data["email"],
+                phone=validated_data["phone"],
+            )
+            print(f"reference in ReferenceSerializer => {reference}")
+            # get user and add reference to user
+            user = CustomUser.objects.get(id=validated_data["user_id"])
+            print(f"user in ReferenceSerializer => {user}")
+            user.references.add(reference)
+            user.save()
+            return reference
+        except Exception as e:
+            raise ValidationError(str(e))
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
+    references = ReferenceSerializer(many=True, required=False)
+
     class Meta:
         model = CustomUser
-        fields = "__all__"
+        fields = (
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            # "password",
+            "is_sales_rep",
+            "is_staff",
+            "is_superuser",
+            "is_active",
+            "date_joined",
+            "last_login",
+            "user_status",
+            "profile_visibility",
+            "market_type",
+            "all_time_revenue",
+            "linkedin_profile",
+            "user_fit_score",
+            "leaderboard_access",
+            "about",
+            "title",
+            "company",
+            "references",
+        )
 
     def validate_password(self, password):
         validate_password(password)
@@ -42,7 +89,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return instance
 
 
-# wip
 class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(allow_blank=False, required=True)
     password = serializers.CharField(allow_blank=False, required=True)
@@ -117,3 +163,47 @@ class RegisterSerializer(serializers.Serializer):
         adapter.save_user(request, user, self)
         setup_user_email(request, user, [])
         return user
+
+
+# When a user clicks on the Request Intro button on the leaderboard,
+# the user id of the stat will send to the back end along with the logged in user's data
+# The back end will create a new intro object and send an email to the reference
+
+
+class IntroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Intro
+        fields = (
+            "id",
+            "user_to",
+            "user_from",
+            "message",
+            "accepted",
+            "accepted_date",
+            "declined",
+            "declined_date",
+            "datetime_created",
+        )
+
+    # wip email notification
+    def create(self, validated_data):
+        print(f"validated_data in IntroSerializer => {validated_data}")
+        try:
+            intro = Intro.objects.create(
+                user_from=validated_data["user_from"],
+                user_to=validated_data["user_to"],
+                message=validated_data["message"],
+            )
+            print(f"intro in IntroSerializer => {intro}")
+
+            # send email wip
+            # context = {
+            #     "user_first_name": validated_data["user_from"].first_name,
+            #     "user_last_name": validated_data["user_from"].last_name,
+            #     "message": validated_data["message"],
+            # }
+            # send_intro_email(context)
+
+            return intro
+        except Exception as e:
+            raise ValidationError(str(e))

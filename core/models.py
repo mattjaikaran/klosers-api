@@ -52,6 +52,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     # references
     references = models.ManyToManyField("Reference", blank=True)
+    intros = models.ManyToManyField("Intro", blank=True)
 
     user_status = models.CharField(
         max_length=50,
@@ -94,3 +95,23 @@ class Reference(AbstractBaseModel):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class Intro(AbstractBaseModel):
+    # user who is making/sending the intro
+    user_from = models.ForeignKey(
+        CustomUser, related_name="user_intros", on_delete=models.CASCADE
+    )
+    # user who is receiving the intro
+    user_to = models.ForeignKey(
+        CustomUser, related_name="user_to_intros", on_delete=models.CASCADE
+    )
+
+    message = models.TextField(max_length=512, blank=True)
+    accepted = models.BooleanField(default=False)
+    declined = models.BooleanField(default=False)
+    accepted_date = models.DateTimeField(null=True, blank=True)
+    declined_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user_from} - {self.user_to}"
