@@ -325,12 +325,13 @@ MANAGERS = ADMINS
 
 # if USE_AWS_STORAGE:
 #     AWS_ACCESS_KEY_ID = _env_get_required("AWS_ACCESS_KEY_ID")
-#     AWS_STORAGE_BUCKET_NAME = _env_get_required("AWS_STORAGE_BUCKET_NAME")
 #     AWS_SECRET_ACCESS_KEY = _env_get_required("AWS_SECRET_ACCESS_KEY")
-#     AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + ".s3.amazonaws.com"
+#     AWS_STORAGE_BUCKET_NAME = _env_get_required("AWS_STORAGE_BUCKET_NAME")
+#     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+#     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 #     AWS_LOCATION = os.environ.get("AWS_LOCATION", "")
 #     AWS_S3_REGION_NAME = _env_get_required("AWS_S3_REGION_NAME")
-#     AWS_DEFAULT_ACL = "public-read"
+#     AWS_DEFAULT_ACL = None
 #     AWS_S3_SIGNATURE_VERSION = "s3v4"
 
 #     # Default file storage is private

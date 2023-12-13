@@ -40,6 +40,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     first_name = models.CharField(("First Name"), max_length=50)
     last_name = models.CharField(("Last Name"), max_length=50)
     email = models.EmailField(max_length=100, unique=True)
+    img_url = models.URLField(null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, blank=True)
     profile_visibility = models.CharField(

@@ -50,7 +50,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            # "password",
+            "img_url",
             "is_sales_rep",
             "is_staff",
             "is_superuser",
