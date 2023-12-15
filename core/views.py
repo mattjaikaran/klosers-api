@@ -8,7 +8,6 @@ from rest_framework import (
     generics,
     status,
     mixins,
-    permissions,
 )
 from rest_framework.response import Response
 
@@ -104,8 +103,6 @@ class ReferenceViewSet(
 ):
     queryset = Reference.objects.all()
     serializer_class = ReferenceSerializer
-    authentication_classes = permissions.IsAuthenticated
-    permission_classes = permissions.AllowAny
 
 
 class IntroViewSet(
@@ -118,5 +115,3 @@ class IntroViewSet(
 ):
     queryset = Intro.objects.all()
     serializer_class = IntroSerializer
-    authentication_classes = permissions.IsAuthenticated
-    permission_classes = permissions.AllowAny
