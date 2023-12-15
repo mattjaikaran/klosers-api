@@ -1,4 +1,5 @@
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, permissions
+from rest_framework.authentication import SessionAuthentication
 
 from .serializers import (
     AwardRecognitionSerializer,

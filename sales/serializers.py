@@ -45,9 +45,18 @@ class StatSerializer(serializers.ModelSerializer):
 
 
 class AwardRecognitionSerializer(serializers.ModelSerializer):
+    user_data = CustomUserSerializer(source="user", read_only=True)
+
     class Meta:
         model = AwardRecognition
-        fields = "__all__"
+        fields = (
+            "id",
+            "type",
+            "text",
+            "user",
+            "user_data",
+            "datetime_created",
+        )
 
 
 class LeaderboardSerializer(serializers.ModelSerializer):

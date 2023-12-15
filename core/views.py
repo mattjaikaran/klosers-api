@@ -47,8 +47,6 @@ class GenericViewSetNoDestroy(
 
 class UserLoginView(generics.CreateAPIView):
     serializer_class = UserLoginSerializer
-    authentication_classes = ()
-    permission_classes = ()
 
     def post(self, request, *args, **kwargs):
         """
@@ -85,9 +83,6 @@ class UserViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    authentication_classes = ()
-    permission_classes = ()
-
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
@@ -109,8 +104,8 @@ class ReferenceViewSet(
 ):
     queryset = Reference.objects.all()
     serializer_class = ReferenceSerializer
-    authentication_classes = ()
-    permission_classes = ()
+    authentication_classes = permissions.IsAuthenticated
+    permission_classes = permissions.AllowAny
 
 
 class IntroViewSet(
@@ -123,5 +118,5 @@ class IntroViewSet(
 ):
     queryset = Intro.objects.all()
     serializer_class = IntroSerializer
-    authentication_classes = ()
-    permission_classes = ()
+    authentication_classes = permissions.IsAuthenticated
+    permission_classes = permissions.AllowAny
