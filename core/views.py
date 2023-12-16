@@ -1,7 +1,4 @@
-from django.shortcuts import render
 from django.contrib.auth import authenticate
-from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
 
 from rest_framework import (
     viewsets,
