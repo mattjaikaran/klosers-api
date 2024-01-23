@@ -1,0 +1,212 @@
+[
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Access Control + Door Entry",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Alarm & Safety Monitoring",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Video Survelliance",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Audio/Video/AR/VR",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Plumbing",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Water Management",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "BAS/BMS",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "IOT Building Solutions",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Geothermal",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Flooring",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Digital Tenant Experience",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Visitor Management",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Data Management and Monitoring",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Digital Twin",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "HVAC",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Solar + Energy  Solutions + Emergency Back Up Power",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Elevator Installation",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Energy Auditing/Metering",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Interior + Exterior Wall Painting + Treatment",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Financing / Insurance",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Occupancy Monitoring Solutions",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "On Demand Transportation ",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Package Management Solutions",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Parking Management",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Predictive Data Solutions",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Property Management Software",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Roofing",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Signage / Wayfinding",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Smart/Glass Windows",
+      "tagline": ""
+    }
+  },
+  {
+    "model": "projects.Category",
+    "fields": {
+      "name": "Smart Home Hub, Lighting/ Temp Controls",
+      "tagline": ""
+    }
+  }
+]

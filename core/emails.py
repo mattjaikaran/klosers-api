@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 # send_html_email(
 #     subject=login_subject,
 #     template="auth/login_email.html",
-#     send_from=_env_get_required("REWYRE_SUPPORT_EMAIL"),
+#     send_from=_env_get_required("SUPPORT_EMAIL"),
 #     send_to=[context["email"]],
 #     context=context,
 # )
@@ -68,60 +68,140 @@ def send_html_email(subject, template, send_from, send_to, context={}, bcc_email
     email.send(fail_silently=False)
 
 
+# password reset email
+def send_password_reset_email(context):
+    print(f"context in send_password_reset_email => {context}")
+    subject_context = {
+        "environment": settings.ENVIRONMENT.upper(),
+        "user_email": context["email"],
+        "password_link": context["password_link"],
+    }
+    password_reset_subject = render_to_string(
+        "auth/password_reset_subject.txt", subject_context
+    )
+    send_html_email(
+        subject=password_reset_subject,
+        template="auth/password_reset_email.html",
+        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_to=[context["email"]],
+        context=context,
+    )
+
+
+# create email to support team (from support team) when a new conversation is created
+def send_conversation_create_email(context):
+    print(f"context in send_conversation_create_email => {context}")
+    subject_context = {
+        "environment": settings.ENVIRONMENT.upper(),
+        "recipient": context["recipient"],
+        "sender": context["sender"],
+    }
+    conversation_create_subject = render_to_string(
+        "conversation/conversation_create_subject.txt", subject_context
+    )
+    send_html_email(
+        subject=conversation_create_subject,
+        template="conversation/conversation_create_email.html",
+        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_to=_env_get_required("SUPPORT_EMAIL"),
+        context=context,
+    )
+
+
+# create email to support team (from support team) when a new property is created
+# def send_property_create_email(context):
+#     print(f"context in send_property_create_email => {context}")
+#     subject_context = {
+#         "environment": settings.ENVIRONMENT.upper(),
+#         # "user_email": context["user_email"],
+#         "property_name": context["property_name"],
+#     }
+#     property_create_subject = render_to_string(
+#         "property/property_create_subject.txt", subject_context
+#     )
+#     send_html_email(
+#         subject=property_create_subject,
+#         template="property/property_create_email.html",
+#         send_from=_env_get_required("SUPPORT_EMAIL"),
+#         send_to=_env_get_required("SUPPORT_EMAIL"),
+#         context=context,
+#     )
+
+
+# create email to support team (from support team) when a user contacts support
+def send_support_email(context):
+    print(f"context in send_support_email => {context}")
+    subject_context = {
+        "environment": settings.ENVIRONMENT.upper(),
+        "user_email": context["user_email"],
+        "message": context["message"],
+    }
+    support_subject = render_to_string("support/support_subject.txt", subject_context)
+    send_html_email(
+        subject=support_subject,
+        template="support/support_email.html",
+        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_to=_env_get_required("SUPPORT_EMAIL"),
+        context=context,
+    )
+
+
 # send an automated email to the references when a user signs up
-# WIP
 def send_reference_email(context):
     print(f"context in send_reference_email => {context}")
     subject_context = {
         "environment": settings.ENVIRONMENT.upper(),
-        "user_email": context["email"],
+        "user_email": context["user_email"],
         "reference_first_name": context["reference_first_name"],
         "user_first_name": context["user_first_name"],
     }
-    reference_subject = render_to_string("auth/reference_subject.txt", subject_context)
+    reference_subject = render_to_string(
+        "reference/reference_subject.txt", subject_context
+    )
     send_html_email(
         subject=reference_subject,
-        template="auth/reference_email.html",
+        template="reference/reference_email.html",
         send_from=_env_get_required("REFERENCE_EMAIL"),
-        send_to=[context["email"]],
+        send_to=[context["user_email"]],
         context=context,
         bcc_emails=[_env_get_required("REFERENCE_EMAIL")],
     )
 
 
-# WIP
 # send intro email from leaderboard cta
-# user (company) sends an intro to the
+# a user (company) sends an intro to a user on the leaderboard
+# intro_email receives the email of the intro
 def send_intro_email(context):
     print(f"context in send_intro_email => {context}")
     subject_context = {
         "environment": settings.ENVIRONMENT.upper(),
         "user_first_name": context["user_first_name"],
         "user_last_name": context["user_last_name"],
+        "message": context["message"],
     }
     intro_subject = render_to_string("intro/intro_subject.txt", subject_context)
     send_html_email(
         subject=intro_subject,
         template="intro/intro_email.html",
         send_from=_env_get_required("INTRO_EMAIL"),
-        send_to=[context["email"]],
+        send_to=_env_get_required("INTRO_EMAIL"),
         context=context,
         bcc_emails=[_env_get_required("INTRO_EMAIL")],
     )
 
 
-# def send_user_login_email(context):
-#     print(f"context in send_user_login_email => {context}")
-#     # Send email to Rewyre Admin notyfing that seller is not set up
-#     subject_context = {
-#         "environment": settings.ENVIRONMENT.upper(),
-#         "user_email": context["email"],
-#     }
-#     login_subject = render_to_string("auth/login_subject.txt", subject_context)
-#     send_html_email(
-#         subject=login_subject,
-#         template="auth/login_email.html",
-#         send_from=_env_get_required("SUPPORT_EMAIL"),
-#         send_to=[context["email"]],
-#         context=context,
-#     )
+# wip
+def send_user_login_email(context):
+    print(f"context in send_user_login_email => {context}")
+    subject_context = {
+        "environment": settings.ENVIRONMENT.upper(),
+        "user_email": context["email"],
+    }
+    login_subject = render_to_string("auth/login_subject.txt", subject_context)
+    send_html_email(
+        subject=login_subject,
+        template="auth/login_email.html",
+        send_from=_env_get_required("SUPPORT_EMAIL"),
+        send_to=[context["email"]],
+        context=context,
+    )

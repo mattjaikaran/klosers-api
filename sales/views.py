@@ -2,29 +2,10 @@ from rest_framework import mixins, viewsets, permissions
 from rest_framework.authentication import SessionAuthentication
 
 from .serializers import (
-    AwardRecognitionSerializer,
-    CareerStatSerializer,
+    AwardSerializer,
     StatSerializer,
-    YTDStatSerializer,
 )
-from .models import AwardRecognition, Stat, YTDStat, CareerStat
-
-
-class YTDStatViewSet(
-    mixins.CreateModelMixin,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
-    viewsets.GenericViewSet,
-):
-    queryset = YTDStat.objects.all()
-    serializer_class = YTDStatSerializer
-    ordering_fields = "-quarter"
-
-    def get_queryset(self):
-        # Filter objects by the authenticated user
-        return YTDStat.objects.all()
+from .models import Award, Stat
 
 
 class LeaderboardViewSet(
@@ -34,30 +15,13 @@ class LeaderboardViewSet(
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
     ordering_fields = "-average_deal_size"
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
 
     def get_queryset(self):
-        # Filter objects by the authenticated user
         return Stat.objects.all()
 
 
-class CareerStatViewSet(
-    mixins.CreateModelMixin,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
-    viewsets.GenericViewSet,
-):
-    queryset = CareerStat.objects.all()
-    serializer_class = CareerStatSerializer
-    ordering_fields = "-year"
-
-    def get_queryset(self):
-        # Filter objects by the authenticated user
-        return CareerStat.objects.filter(user=self.request.user)
-
-
-# new stat
 class StatViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
@@ -69,13 +33,14 @@ class StatViewSet(
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
     ordering_fields = "-datetime_created"
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
 
     def get_queryset(self):
-        # Filter objects by the authenticated user
-        return Stat.objects.filter(user=self.request.user)
+        return Stat.objects.all()
 
 
-class AwardRecognitionViewSet(
+class AwardViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -83,9 +48,10 @@ class AwardRecognitionViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = AwardRecognition.objects.all()
-    serializer_class = AwardRecognitionSerializer
+    queryset = Award.objects.all()
+    serializer_class = AwardSerializer
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
 
     def get_queryset(self):
-        # Filter objects by the authenticated user
-        return AwardRecognition.objects.filter(user=self.request.user)
+        return Award.objects.all()

@@ -1,6 +1,7 @@
 from django.contrib import admin
+
 from common.admin import GenericModelAdmin
-from .models import CustomUser, Intro, Reference
+from .models import CustomUser, ContactSupport, Intro, Reference
 
 
 class CustomUserAdmin(GenericModelAdmin):
@@ -40,6 +41,12 @@ class IntroAdmin(GenericModelAdmin):
     )
 
 
+class ContactSupportAdmin(GenericModelAdmin):
+    list_display = ("email", "description")
+    search_fields = ("email", "description")
+
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Reference, ReferenceAdmin)
 admin.site.register(Intro, IntroAdmin)
+admin.site.register(ContactSupport, ContactSupportAdmin)

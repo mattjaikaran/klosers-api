@@ -1,0 +1,5 @@
+{% comment %} subject line for Conversation create email sent to support {% endcomment %}
+
+{% load i18n %}{% autoescape off %}
+{% blocktrans %} New Conversation Created - Klosers Support{% endblocktrans %}
+{% endautoescape %}

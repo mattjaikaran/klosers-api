@@ -1,0 +1,13 @@
+{% load i18n %} {% autoescape off %} {% block html_body %} {% blocktrans %}
+<p>Hello Support,</p>
+{% endblocktrans %}
+<p>
+  There is a new Stakeholder created by {{ user_email }} with the message -
+  <br />
+  {{ message }}
+</p>
+
+<p>Thanks</p>
+<p>Klosers Team</p>
+
+{% endblock html_body %} {% endautoescape %}

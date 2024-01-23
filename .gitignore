@@ -1,7 +1,22 @@
-.env*.local
+# env
 .env
 /env
-*/__pycache__
-notes.md
-/static
-/staticfiles
+
+
+# Ignore local git directory
+.git/
+
+# Ignore compiled Python
+*.pyc
+__pycache__/
+
+# Ignore local static files and media
+server/static/
+static/
+server/media-files/
+node_modules/
+logs/
+media-files/
+
+# Ignore thumbnail files on OSX
+.DS_Store

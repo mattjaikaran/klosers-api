@@ -1,0 +1,13 @@
+{% load i18n %} {% autoescape off %} {% block html_body %} {% blocktrans %}
+<p>Hello Support,</p>
+{% endblocktrans %}
+
+<p>
+  There is a new conversation created by {{ sender }} with the name {{ recipient
+  }}.
+</p>
+
+<p>Thanks</p>
+<p>Klosers Team</p>
+
+{% endblock html_body %} {% endautoescape %}

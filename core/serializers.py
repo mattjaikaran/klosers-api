@@ -1,19 +1,16 @@
-from core.emails import send_intro_email
-from .models import CustomUser, Intro, Reference
+from rest_framework.response import Response
 from django.contrib.auth.password_validation import validate_password
-
 from django.core.exceptions import ValidationError
-from django.contrib.auth import login
-
-from rest_framework import serializers, exceptions
+from rest_framework import serializers, exceptions, status
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.authtoken.models import Token
-
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import setup_user_email
+from django.contrib.auth import login, authenticate
+from core.emails import send_intro_email, send_reference_email, send_support_email
+from core.models import CustomUser, ContactSupport, Intro, Reference
 
 
 class ReferenceSerializer(serializers.ModelSerializer):
-    user_id = serializers.CharField(write_only=True)
+    user_id = serializers.CharField(required=False)
 
     class Meta:
         model = Reference
@@ -22,25 +19,40 @@ class ReferenceSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print(f"validated_data in ReferenceSerializer => {validated_data}")
         try:
+            first_name = validated_data["first_name"]
+            last_name = validated_data["last_name"]
+            email = validated_data["email"]
+            phone = validated_data["phone"]
+            user_id = validated_data["user_id"]
+
             reference = Reference.objects.create(
-                first_name=validated_data["first_name"],
-                last_name=validated_data["last_name"],
-                email=validated_data["email"],
-                phone=validated_data["phone"],
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
             )
             print(f"reference in ReferenceSerializer => {reference}")
             # get user and add reference to user
-            user = CustomUser.objects.get(id=validated_data["user_id"])
+            user = CustomUser.objects.get(id=user_id)
             print(f"user in ReferenceSerializer => {user}")
             user.references.add(reference)
+
+            context = {
+                "user_email": email,
+                "reference_first_name": first_name,
+                "user_first_name": user.first_name,
+                "username": user.username,
+            }
+            send_reference_email(context)
+
             user.save()
             return reference
         except Exception as e:
             raise ValidationError(str(e))
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
-    references = ReferenceSerializer(many=True, required=False)
+class UserSerializer(serializers.ModelSerializer):
+    references = ReferenceSerializer(many=True)
 
     class Meta:
         model = CustomUser
@@ -55,7 +67,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "is_staff",
             "is_superuser",
             "is_active",
-            "date_joined",
             "last_login",
             "user_status",
             "profile_visibility",
@@ -70,33 +81,125 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "references",
         )
 
+
+# class OrganizationSerializer(serializers.ModelSerializer):
+#     name = serializers.CharField(required=True)
+#     # owner = serializers.PrimaryKeyRelatedField(
+#     #     queryset=CustomUser.objects.all(), required=True
+#     # )
+
+#     class Meta:
+#         model = Organization
+#         fields = "__all__"
+
+#     def create(self, validated_data):
+#         print(f"validated_data => {validated_data}")
+#         print(f"self => {self}")
+#         organization = Organization.objects.create(
+#             name=validated_data["name"],
+#             owner=validated_data["owner"],
+#         )
+#         print(f"organization => {organization}")
+#         organization.save()
+#         return organization
+
+
+# class TeamSerializer(serializers.ModelSerializer):
+#     name = serializers.CharField(required=True)
+#     organization = serializers.PrimaryKeyRelatedField(
+#         queryset=Organization.objects.all(), required=True
+#     )
+
+#     class Meta:
+#         model = Team
+#         fields = "__all__"
+
+#     def create(self, validated_data):
+#         print(f"validated_data => {validated_data}")
+#         print(f"self => {self}")
+#         team = Team.objects.create(
+#             name=validated_data["name"],
+#             organization=validated_data["organization"],
+#         )
+#         print(f"team => {team}")
+#         team.save()
+#         return team
+
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    """
+    Serializer class to register users.
+    This is an organization level sign up.
+
+    TBD -
+    Meaning the user will be the owner of the organization.
+    And the organization will have a default team upon signup.
+    Users can be added to the team later.
+    Users can be added to multiple teams later.
+    """
+
+    email = serializers.CharField()
+    username = serializers.CharField()
+    password = serializers.CharField()
+    # organizations = OrganizationSerializer(many=True, required=False)
+    # teams = TeamSerializer(many=True, required=False)
+
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
     def validate_password(self, password):
         validate_password(password)
         return password
 
-    def create(self, validate_data):
-        user = CustomUser.objects.create_user(
-            validate_data["username"],
-            validate_data["first_name"],
-            validate_data["last_name"],
-            validate_data["email"],
-            validate_data["password"],
-        )
-        return user
+    def create(self, validated_data):
+        try:
+            # Create a CustomUser
+            user = CustomUser.objects.create(
+                email=validated_data["email"],
+                username=validated_data["username"],
+                first_name=validated_data["first_name"],
+                last_name=validated_data["last_name"],
+            )
+            user.set_password(validated_data["password"])
+
+            # Create an Organization
+            # organization = Organization.objects.create(
+            #     name=company_name,
+            #     owner=user,
+            # )
+            # user.organizations.add(organization)
+
+            user.save()
+
+            return user
+        except Exception as e:
+            return Response(
+                data={f"Error in UserRegistrationSerializer - {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     def update(self, instance, validated_data):
-        instance = super().update(instance, validated_data)
-        return instance
+        try:
+            instance = super().update(instance, validated_data)
+            return instance
+        except Exception as e:
+            return Response(
+                data={f"Error in UserRegistrationSerializer - {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
+class UserLoginSerializer(TokenObtainPairSerializer):
     email = serializers.EmailField(allow_blank=False, required=True)
     password = serializers.CharField(allow_blank=False, required=True)
 
     class Meta:
         model = CustomUser
-        fields = "__all__"
-        exclude = ("password",)
+        fields = ("email", "password")
 
     def validate(self, data):
         print(f"data in validate => {data}")
@@ -111,6 +214,16 @@ class UserLoginSerializer(serializers.ModelSerializer):
         """Emails are always stored and compared in lowercase."""
         return value.lower()
 
+    @classmethod
+    def get_token(cls, user):
+        token = super(UserLoginSerializer, cls).get_token(user)
+        print(f"token in get_token => {token}")
+
+        # Add custom claims
+        token["email"] = user.email
+
+        return token
+
     @staticmethod
     def login(user, request):
         """
@@ -118,56 +231,21 @@ class UserLoginSerializer(serializers.ModelSerializer):
         """
         login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         auth_token, token_created = Token.objects.get_or_create(user=user)
-        serializer = CustomUserSerializer(user, context={"request": request})
+        print(f"auth_token in login => {auth_token}")
+        serializer = UserSerializer(user, context={"request": request})
         response_data = serializer.data
+        print(f"response_data in login => {response_data}")
         response_data["token"] = auth_token.key
         return response_data
 
 
-class RegisterSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)
-
-    def validate_email(self, value):
-        email = get_adapter().clean_email(value)
-        print(f"email in validate_email => {email}")
-        # if allauth_settings.UNIQUE_EMAIL:
-        #     if email and email_address_exists(email):
-        #         raise serializers.ValidationError(
-        #             _("A user is already registered with this e-mail address.")
-        #         )
-        return email
-
-    def validate_password1(self, value):
-        return get_adapter().clean_password(value)
-
-    def validate(self, data):
-        if data["password1"] != data["password2"]:
-            raise serializers.ValidationError(("The two password fields didn't match."))
-        return data
-
-    def get_cleaned_data(self):
-        return {
-            "email": self.validated_data.get("email", ""),
-            "first_name": self.validated_data.get("first_name", ""),
-            "last_name": self.validated_data.get("last_name", ""),
-            "password1": self.validated_data.get("password1", ""),
-            "password2": self.validated_data.get("password2", ""),
-        }
-
-    def save(self, request):
-        adapter = get_adapter()
-        user = adapter.new_user(request)
-        self.cleaned_data = self.get_cleaned_data()
-        adapter.save_user(request, user, self)
-        setup_user_email(request, user, [])
-        return user
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
 
 
-# When a user clicks on the Request Intro button on the leaderboard,
-# the user id of the stat will send to the back end along with the logged in user's data
-# The back end will create a new intro object and send an email to the reference
+class PasswordResetSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True)
 
 
 class IntroSerializer(serializers.ModelSerializer):
@@ -185,7 +263,6 @@ class IntroSerializer(serializers.ModelSerializer):
             "datetime_created",
         )
 
-    # wip email notification
     def create(self, validated_data):
         print(f"validated_data in IntroSerializer => {validated_data}")
         try:
@@ -196,14 +273,42 @@ class IntroSerializer(serializers.ModelSerializer):
             )
             print(f"intro in IntroSerializer => {intro}")
 
-            # send email wip
-            # context = {
-            #     "user_first_name": validated_data["user_from"].first_name,
-            #     "user_last_name": validated_data["user_from"].last_name,
-            #     "message": validated_data["message"],
-            # }
-            # send_intro_email(context)
+            # send email to user_to
+            context = {
+                "user_first_name": validated_data["user_from"].first_name,
+                "user_last_name": validated_data["user_from"].last_name,
+                "message": validated_data["message"],
+            }
+            send_intro_email(context)
 
             return intro
         except Exception as e:
             raise ValidationError(str(e))
+
+
+class ContactSupportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactSupport
+        fields = "__all__"
+
+    def create(self, validated_data):
+        print(f"validated_data", validated_data)
+        try:
+            email = validated_data["email"]
+            description = validated_data["description"]
+            print(f"email => {email}")
+            print(f"description => {description}")
+            contact_support = ContactSupport.objects.create(
+                email=email,
+                description=description,
+            )
+            # send email to support team
+            context = {
+                "user_email": email,
+                "message": description,
+            }
+            send_support_email(context)
+            return contact_support
+        except Exception as e:
+            print(f"Exception create in ContactSupportSerializer => {e}")
+            raise exceptions.ValidationError(f"Contact Support failed. => {e}")

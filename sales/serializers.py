@@ -1,23 +1,12 @@
-from rest_framework import serializers
+from h11 import Response
+from rest_framework import serializers, status
 
-from core.serializers import CustomUserSerializer
-from .models import AwardRecognition, Stat, YTDStat, CareerStat
-
-
-class YTDStatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = YTDStat
-        fields = "__all__"
-
-
-class CareerStatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CareerStat
-        fields = "__all__"
+from core.serializers import UserSerializer
+from .models import Award, Stat
 
 
 class StatSerializer(serializers.ModelSerializer):
-    user_data = CustomUserSerializer(source="user", read_only=True)
+    user_data = UserSerializer(source="user", read_only=True)
 
     class Meta:
         model = Stat
@@ -39,16 +28,20 @@ class StatSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print(f"validated_data => {validated_data}")
-        stat = Stat.objects.create(**validated_data)
-        return stat
+        try:
+            print(f"validated_data => {validated_data}")
+            stat = Stat.objects.create(**validated_data)
+            return stat
+        except Exception as e:
+            print(f"Error in StatSerializer.create => {e}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AwardRecognitionSerializer(serializers.ModelSerializer):
-    user_data = CustomUserSerializer(source="user", read_only=True)
+class AwardSerializer(serializers.ModelSerializer):
+    user_data = UserSerializer(source="user", read_only=True)
 
     class Meta:
-        model = AwardRecognition
+        model = Award
         fields = (
             "id",
             "type",
@@ -57,6 +50,15 @@ class AwardRecognitionSerializer(serializers.ModelSerializer):
             "user_data",
             "datetime_created",
         )
+
+    def create(self, validated_data):
+        try:
+            print(f"validated_data => {validated_data}")
+            award = Award.objects.create(**validated_data)
+            return award
+        except Exception as e:
+            print(f"Error in AwardSerializer.create => {e}")
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LeaderboardSerializer(serializers.ModelSerializer):

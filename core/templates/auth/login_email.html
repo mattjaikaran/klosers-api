@@ -1,0 +1,20 @@
+{% load i18n %} {% autoescape off %} {% block html_body %} {% blocktrans %}
+<p>Hello User,</p>
+{% endblocktrans %}
+<p>
+    Please login with the link below
+</p>
+
+<p>
+    <a href={{ login_link }}>Click here to login </a>
+</p>
+
+<p>
+    Or copy and paste the link - <strong>{{ login_link }}</strong>
+</p>
+
+<p>
+    {% trans "Thank you." %}
+</p>
+<p>Klosers Team</p>
+{% endblock html_body %} {% endautoescape %}

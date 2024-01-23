@@ -1,45 +1,67 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
-
+from django.contrib.auth.models import PermissionsMixin, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 from common.models import AbstractBaseModel
 from . import constants
 
 
-class CustomUserModelManager(BaseUserManager):
-    def create_user(self, username, email, password=None, **extra_fields):
-        """
-        Creates a custom user with the given fields
-        """
-        user = self.model(
-            username=username, email=self.normalize_email(email), **extra_fields
-        )
+class CustomUserManager(BaseUserManager):
+    use_in_migrations = True
 
+    def create_user(self, email, password, **extra_fields):
+        normalized_email = self.normalize_email(email).lower()
+
+        # Create user model instance & set password
+        user = self.model(email=normalized_email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, username, email, password, **extra_fields):
-        user = self.create_user(username, email, password=password, **extra_fields)
-
-        user.is_staff = True
-        user.is_superuser = True
-        user.leaderboard_access = True
-        user.save(using=self._db)
-
-        return user
+    # Create user with superuser defaults via **extra_fields
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields["is_staff"] = True
+        extra_fields["is_superuser"] = True
+        return self.create_user(email, password, **extra_fields)
 
     class Meta:
         ordering = ("id",)
 
 
-class CustomUser(AbstractUser, PermissionsMixin):
+# class Organization(AbstractBaseModel):
+#     name = models.CharField(max_length=255, unique=False)
+#     url = models.URLField(max_length=200, blank=True)
+#     owner = models.ForeignKey(
+#         "CustomUser",
+#         on_delete=models.PROTECT,
+#         related_name="org_owner",
+#         null=True,
+#     )
+
+#     def __str__(self):
+#         return f"Organization: {str(self.name)}"
+
+
+# class Team(AbstractBaseModel):
+#     name = models.CharField(max_length=255)
+#     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+#     members = models.ManyToManyField("CustomUser", related_name="org_teams")
+
+#     def __str__(self):
+#         return f"Team: {str(self.name)}"
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    # `password` inherited from `AbstractBaseUser`
+    # `is_superuser` inherited from `PermissionsMixin`
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(
+        unique=True, error_messages={"unique": "A user with that email already exists"}
+    )
     username = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(("First Name"), max_length=50)
     last_name = models.CharField(("Last Name"), max_length=50)
-    email = models.EmailField(max_length=100, unique=True)
     img_url = models.URLField(null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, blank=True)
@@ -68,20 +90,73 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     about = models.TextField(max_length=512, blank=True)
 
+    is_admin = models.BooleanField(
+        "admin",
+        default=False,
+        help_text="Gives Users access to the Admin Dashboard to view all properties and all projects on the site.",
+    )
+    is_staff = models.BooleanField(
+        "staff",
+        default=False,
+        help_text="Designates whether the user can log into Django Admin.",
+    )
+    is_superuser = models.BooleanField(default=False)
+
+    # Users can be members of multiple organizations
+    # organizations = models.ManyToManyField(
+    #     Organization, related_name="user_orgs", blank=True
+    # )
+
+    # Use 'email' for the user's username
+    USERNAME_FIELD = "email"
+
+    # Prompt for these required fields when creating a user via `createsuperuser` command
+    # 'email' is included automatically since it is set as USERNAME_FIELD
+    REQUIRED_FIELDS = [
+        "first_name",
+        "last_name",
+    ]
+
+    objects = CustomUserManager()
+
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
-    active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    # @property
+    # def token(self):
+    #     """
+    #     Allows us to get a user's token by calling `user.token` instead of
+    #     `user.generate_jwt_token().
 
-    objects = CustomUserModelManager()
+    #     The `@property` decorator above makes this possible. `token` is called
+    #     a "dynamic property".
+    #     """
+    #     return self._generate_jwt_token()
+
+    # def _generate_jwt_token(self):
+    #     """
+    #     Generates a JSON Web Token that stores this user's ID and has an expiry
+    #     date set to 60 days into the future.
+    #     """
+    #     dt = datetime.now() + datetime.timedelta(days=60)
+
+    #     token = jwt.encode(
+    #         {"id": self.pk, "exp": int(dt.strftime("%s"))},
+    #         settings.SECRET_KEY,
+    #         algorithm="HS256",
+    #     )
+
+    #     return token.decode("utf-8")
+
+    def __str__(self):
+        return f"{self.full_name}"
 
     class Meta:
+        ordering = ["email"]
+        permissions = (("can_access_settings", "Can access settings"),)
         verbose_name = "User"
+        verbose_name_plural = "Users"
 
 
 class Reference(AbstractBaseModel):
@@ -116,3 +191,12 @@ class Intro(AbstractBaseModel):
 
     def __str__(self):
         return f"{self.user_from} - {self.user_to}"
+
+
+class ContactSupport(AbstractBaseModel):
+    email = models.EmailField()
+    description = models.TextField(max_length=1500)
+
+    class Meta:
+        ordering = ["-datetime_created"]
+        verbose_name_plural = "Support Messages"
