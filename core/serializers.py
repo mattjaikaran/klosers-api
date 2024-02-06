@@ -37,13 +37,13 @@ class ReferenceSerializer(serializers.ModelSerializer):
             print(f"user in ReferenceSerializer => {user}")
             user.references.add(reference)
 
-            context = {
-                "user_email": email,
-                "reference_first_name": first_name,
-                "user_first_name": user.first_name,
-                "username": user.username,
-            }
-            send_reference_email(context)
+            # context = {
+            #     "user_email": email,
+            #     "reference_first_name": first_name,
+            #     "user_first_name": user.first_name,
+            #     "username": user.username,
+            # }
+            # send_reference_email(context)
 
             user.save()
             return reference
@@ -274,12 +274,12 @@ class IntroSerializer(serializers.ModelSerializer):
             print(f"intro in IntroSerializer => {intro}")
 
             # send email to user_to
-            context = {
-                "user_first_name": validated_data["user_from"].first_name,
-                "user_last_name": validated_data["user_from"].last_name,
-                "message": validated_data["message"],
-            }
-            send_intro_email(context)
+            # context = {
+            #     "user_first_name": validated_data["user_from"].first_name,
+            #     "user_last_name": validated_data["user_from"].last_name,
+            #     "message": validated_data["message"],
+            # }
+            # send_intro_email(context)
 
             return intro
         except Exception as e:
@@ -303,11 +303,11 @@ class ContactSupportSerializer(serializers.ModelSerializer):
                 description=description,
             )
             # send email to support team
-            context = {
-                "user_email": email,
-                "message": description,
-            }
-            send_support_email(context)
+            # context = {
+            #     "user_email": email,
+            #     "message": description,
+            # }
+            # send_support_email(context)
             return contact_support
         except Exception as e:
             print(f"Exception create in ContactSupportSerializer => {e}")

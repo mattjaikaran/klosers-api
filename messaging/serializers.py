@@ -80,11 +80,11 @@ class ConversationSerializer(serializers.ModelSerializer):
             conversation.save()
 
             # send email to support team
-            context = {
-                "recipient": validated_data["participants"][0].email,
-                "sender": validated_data["participants"][1].email,
-            }
-            send_conversation_create_email(context)
+            # context = {
+            #     "recipient": validated_data["participants"][0].email,
+            #     "sender": validated_data["participants"][1].email,
+            # }
+            # send_conversation_create_email(context)
 
             return conversation
         except Exception as e:
