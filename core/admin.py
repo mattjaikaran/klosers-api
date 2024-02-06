@@ -10,6 +10,7 @@ class CustomUserAdmin(GenericModelAdmin):
         "first_name",
         "last_name",
         "email",
+        "leaderboard_access",
         "is_staff",
         "is_superuser",
         "id",
